@@ -1,0 +1,622 @@
+{
+  "contractName": "myCounter",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "increase",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.13+commit.abaa5c0e\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"increase\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/contracts/myCounter.sol\":\"myCounter\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"@openzeppelin/contracts/utils/Counters.sol\":{\"keccak256\":\"0xf0018c2440fbe238dd3a8732fa8e17a0f9dce84d31451dc8a32f6d62b349c9f1\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://59e1c62884d55b70f3ae5432b44bb3166ad71ae3acd19c57ab6ddc3c87c325ee\",\"dweb:/ipfs/QmezuXg5GK5oeA4F91EZhozBFekhq5TD966bHPH18cCqhu\"]},\"project:/contracts/myCounter.sol\":{\"keccak256\":\"0x85aea4c046cd986e67587f4e3328424479daaab73faefaf6a2f540372bee31ba\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://50b04de4a5783f4081f74d782f545c666e51e3b8656cbe3616206c531751500c\",\"dweb:/ipfs/QmP1HQuMZGSMoPsxKPv6QDsXYBn8Z1FaitgHXRkF5CgZvC\"]}},\"version\":1}",
+  "bytecode": "0x608060405234801561001057600080fd5b5060ed8061001f6000396000f3fe6080604052348015600f57600080fd5b506004361060285760003560e01c8063e8927fbc14602d575b600080fd5b60336047565b604051603e9190609e565b60405180910390f35b600080605260006063565b9050605c60006071565b8091505090565b600081600001549050919050565b6001816000016000828254019250508190555050565b6000819050919050565b6098816087565b82525050565b600060208201905060b160008301846091565b9291505056fea2646970667358221220a41272208d49be9a35c689520909bf63727f87aeb007d8e1eb04e8c515c4b3ea64736f6c634300080d0033",
+  "deployedBytecode": "0x6080604052348015600f57600080fd5b506004361060285760003560e01c8063e8927fbc14602d575b600080fd5b60336047565b604051603e9190609e565b60405180910390f35b600080605260006063565b9050605c60006071565b8091505090565b600081600001549050919050565b6001816000016000828254019250508190555050565b6000819050919050565b6098816087565b82525050565b600060208201905060b160008301846091565b9291505056fea2646970667358221220a41272208d49be9a35c689520909bf63727f87aeb007d8e1eb04e8c515c4b3ea64736f6c634300080d0033",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [
+    {
+      "ast": {
+        "nodeType": "YulBlock",
+        "src": "0:439:14",
+        "statements": [
+          {
+            "body": {
+              "nodeType": "YulBlock",
+              "src": "52:32:14",
+              "statements": [
+                {
+                  "nodeType": "YulAssignment",
+                  "src": "62:16:14",
+                  "value": {
+                    "name": "value",
+                    "nodeType": "YulIdentifier",
+                    "src": "73:5:14"
+                  },
+                  "variableNames": [
+                    {
+                      "name": "cleaned",
+                      "nodeType": "YulIdentifier",
+                      "src": "62:7:14"
+                    }
+                  ]
+                }
+              ]
+            },
+            "name": "cleanup_t_uint256",
+            "nodeType": "YulFunctionDefinition",
+            "parameters": [
+              {
+                "name": "value",
+                "nodeType": "YulTypedName",
+                "src": "34:5:14",
+                "type": ""
+              }
+            ],
+            "returnVariables": [
+              {
+                "name": "cleaned",
+                "nodeType": "YulTypedName",
+                "src": "44:7:14",
+                "type": ""
+              }
+            ],
+            "src": "7:77:14"
+          },
+          {
+            "body": {
+              "nodeType": "YulBlock",
+              "src": "155:53:14",
+              "statements": [
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "name": "pos",
+                        "nodeType": "YulIdentifier",
+                        "src": "172:3:14"
+                      },
+                      {
+                        "arguments": [
+                          {
+                            "name": "value",
+                            "nodeType": "YulIdentifier",
+                            "src": "195:5:14"
+                          }
+                        ],
+                        "functionName": {
+                          "name": "cleanup_t_uint256",
+                          "nodeType": "YulIdentifier",
+                          "src": "177:17:14"
+                        },
+                        "nodeType": "YulFunctionCall",
+                        "src": "177:24:14"
+                      }
+                    ],
+                    "functionName": {
+                      "name": "mstore",
+                      "nodeType": "YulIdentifier",
+                      "src": "165:6:14"
+                    },
+                    "nodeType": "YulFunctionCall",
+                    "src": "165:37:14"
+                  },
+                  "nodeType": "YulExpressionStatement",
+                  "src": "165:37:14"
+                }
+              ]
+            },
+            "name": "abi_encode_t_uint256_to_t_uint256_fromStack",
+            "nodeType": "YulFunctionDefinition",
+            "parameters": [
+              {
+                "name": "value",
+                "nodeType": "YulTypedName",
+                "src": "143:5:14",
+                "type": ""
+              },
+              {
+                "name": "pos",
+                "nodeType": "YulTypedName",
+                "src": "150:3:14",
+                "type": ""
+              }
+            ],
+            "src": "90:118:14"
+          },
+          {
+            "body": {
+              "nodeType": "YulBlock",
+              "src": "312:124:14",
+              "statements": [
+                {
+                  "nodeType": "YulAssignment",
+                  "src": "322:26:14",
+                  "value": {
+                    "arguments": [
+                      {
+                        "name": "headStart",
+                        "nodeType": "YulIdentifier",
+                        "src": "334:9:14"
+                      },
+                      {
+                        "kind": "number",
+                        "nodeType": "YulLiteral",
+                        "src": "345:2:14",
+                        "type": "",
+                        "value": "32"
+                      }
+                    ],
+                    "functionName": {
+                      "name": "add",
+                      "nodeType": "YulIdentifier",
+                      "src": "330:3:14"
+                    },
+                    "nodeType": "YulFunctionCall",
+                    "src": "330:18:14"
+                  },
+                  "variableNames": [
+                    {
+                      "name": "tail",
+                      "nodeType": "YulIdentifier",
+                      "src": "322:4:14"
+                    }
+                  ]
+                },
+                {
+                  "expression": {
+                    "arguments": [
+                      {
+                        "name": "value0",
+                        "nodeType": "YulIdentifier",
+                        "src": "402:6:14"
+                      },
+                      {
+                        "arguments": [
+                          {
+                            "name": "headStart",
+                            "nodeType": "YulIdentifier",
+                            "src": "415:9:14"
+                          },
+                          {
+                            "kind": "number",
+                            "nodeType": "YulLiteral",
+                            "src": "426:1:14",
+                            "type": "",
+                            "value": "0"
+                          }
+                        ],
+                        "functionName": {
+                          "name": "add",
+                          "nodeType": "YulIdentifier",
+                          "src": "411:3:14"
+                        },
+                        "nodeType": "YulFunctionCall",
+                        "src": "411:17:14"
+                      }
+                    ],
+                    "functionName": {
+                      "name": "abi_encode_t_uint256_to_t_uint256_fromStack",
+                      "nodeType": "YulIdentifier",
+                      "src": "358:43:14"
+                    },
+                    "nodeType": "YulFunctionCall",
+                    "src": "358:71:14"
+                  },
+                  "nodeType": "YulExpressionStatement",
+                  "src": "358:71:14"
+                }
+              ]
+            },
+            "name": "abi_encode_tuple_t_uint256__to_t_uint256__fromStack_reversed",
+            "nodeType": "YulFunctionDefinition",
+            "parameters": [
+              {
+                "name": "headStart",
+                "nodeType": "YulTypedName",
+                "src": "284:9:14",
+                "type": ""
+              },
+              {
+                "name": "value0",
+                "nodeType": "YulTypedName",
+                "src": "296:6:14",
+                "type": ""
+              }
+            ],
+            "returnVariables": [
+              {
+                "name": "tail",
+                "nodeType": "YulTypedName",
+                "src": "307:4:14",
+                "type": ""
+              }
+            ],
+            "src": "214:222:14"
+          }
+        ]
+      },
+      "contents": "{\n\n    function cleanup_t_uint256(value) -> cleaned {\n        cleaned := value\n    }\n\n    function abi_encode_t_uint256_to_t_uint256_fromStack(value, pos) {\n        mstore(pos, cleanup_t_uint256(value))\n    }\n\n    function abi_encode_tuple_t_uint256__to_t_uint256__fromStack_reversed(headStart , value0) -> tail {\n        tail := add(headStart, 32)\n\n        abi_encode_t_uint256_to_t_uint256_fromStack(value0,  add(headStart, 0))\n\n    }\n\n}\n",
+      "id": 14,
+      "language": "Yul",
+      "name": "#utility.yul"
+    }
+  ],
+  "sourceMap": "137:234:12:-:0;;;;;;;;;;;;;;;;;;;",
+  "deployedSourceMap": "137:234:12:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;229:140;;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;;265:7;288:13;304:12;:2;:10;:12::i;:::-;288:28;;326:14;:2;:12;:14::i;:::-;357:5;350:12;;;229:140;:::o;827:112:7:-;892:7;918;:14;;;911:21;;827:112;;;:::o;945:123::-;1050:1;1032:7;:14;;;:19;;;;;;;;;;;945:123;:::o;7:77:14:-;44:7;73:5;62:16;;7:77;;;:::o;90:118::-;177:24;195:5;177:24;:::i;:::-;172:3;165:37;90:118;;:::o;214:222::-;307:4;345:2;334:9;330:18;322:26;;358:71;426:1;415:9;411:17;402:6;358:71;:::i;:::-;214:222;;;;:::o",
+  "source": "// contracts/GameItem.sol\n// SPDX-License-Identifier: MIT\npragma solidity ^0.8.0;\n\nimport \"@openzeppelin/contracts/utils/Counters.sol\";\n\ncontract myCounter {\n    using Counters for Counters.Counter;\n    Counters.Counter id;\n\n    function increase() public returns (uint256)\n    {\n        uint256 newID = id.current();\n        id.increment();\n        return newID;\n    }\n}\n",
+  "sourcePath": "/home/ubuntu/tianxu/block_chain/vokaNFT/contracts/myCounter.sol",
+  "ast": {
+    "absolutePath": "project:/contracts/myCounter.sol",
+    "exportedSymbols": {
+      "Counters": [
+        1545
+      ],
+      "myCounter": [
+        1847
+      ]
+    },
+    "id": 1848,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1819,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "58:23:12"
+      },
+      {
+        "absolutePath": "@openzeppelin/contracts/utils/Counters.sol",
+        "file": "@openzeppelin/contracts/utils/Counters.sol",
+        "id": 1820,
+        "nameLocation": "-1:-1:-1",
+        "nodeType": "ImportDirective",
+        "scope": 1848,
+        "sourceUnit": 1546,
+        "src": "83:52:12",
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "myCounter",
+        "contractDependencies": [],
+        "contractKind": "contract",
+        "fullyImplemented": true,
+        "id": 1847,
+        "linearizedBaseContracts": [
+          1847
+        ],
+        "name": "myCounter",
+        "nameLocation": "146:9:12",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "global": false,
+            "id": 1824,
+            "libraryName": {
+              "id": 1821,
+              "name": "Counters",
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 1545,
+              "src": "168:8:12"
+            },
+            "nodeType": "UsingForDirective",
+            "src": "162:36:12",
+            "typeName": {
+              "id": 1823,
+              "nodeType": "UserDefinedTypeName",
+              "pathNode": {
+                "id": 1822,
+                "name": "Counters.Counter",
+                "nodeType": "IdentifierPath",
+                "referencedDeclaration": 1477,
+                "src": "181:16:12"
+              },
+              "referencedDeclaration": 1477,
+              "src": "181:16:12",
+              "typeDescriptions": {
+                "typeIdentifier": "t_struct$_Counter_$1477_storage_ptr",
+                "typeString": "struct Counters.Counter"
+              }
+            }
+          },
+          {
+            "constant": false,
+            "id": 1827,
+            "mutability": "mutable",
+            "name": "id",
+            "nameLocation": "220:2:12",
+            "nodeType": "VariableDeclaration",
+            "scope": 1847,
+            "src": "203:19:12",
+            "stateVariable": true,
+            "storageLocation": "default",
+            "typeDescriptions": {
+              "typeIdentifier": "t_struct$_Counter_$1477_storage",
+              "typeString": "struct Counters.Counter"
+            },
+            "typeName": {
+              "id": 1826,
+              "nodeType": "UserDefinedTypeName",
+              "pathNode": {
+                "id": 1825,
+                "name": "Counters.Counter",
+                "nodeType": "IdentifierPath",
+                "referencedDeclaration": 1477,
+                "src": "203:16:12"
+              },
+              "referencedDeclaration": 1477,
+              "src": "203:16:12",
+              "typeDescriptions": {
+                "typeIdentifier": "t_struct$_Counter_$1477_storage_ptr",
+                "typeString": "struct Counters.Counter"
+              }
+            },
+            "visibility": "internal"
+          },
+          {
+            "body": {
+              "id": 1845,
+              "nodeType": "Block",
+              "src": "278:91:12",
+              "statements": [
+                {
+                  "assignments": [
+                    1833
+                  ],
+                  "declarations": [
+                    {
+                      "constant": false,
+                      "id": 1833,
+                      "mutability": "mutable",
+                      "name": "newID",
+                      "nameLocation": "296:5:12",
+                      "nodeType": "VariableDeclaration",
+                      "scope": 1845,
+                      "src": "288:13:12",
+                      "stateVariable": false,
+                      "storageLocation": "default",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      },
+                      "typeName": {
+                        "id": 1832,
+                        "name": "uint256",
+                        "nodeType": "ElementaryTypeName",
+                        "src": "288:7:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_uint256",
+                          "typeString": "uint256"
+                        }
+                      },
+                      "visibility": "internal"
+                    }
+                  ],
+                  "id": 1837,
+                  "initialValue": {
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "expression": {
+                        "id": 1834,
+                        "name": "id",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1827,
+                        "src": "304:2:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Counter_$1477_storage",
+                          "typeString": "struct Counters.Counter storage ref"
+                        }
+                      },
+                      "id": 1835,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "current",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 1489,
+                      "src": "304:10:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_view$_t_struct$_Counter_$1477_storage_ptr_$returns$_t_uint256_$bound_to$_t_struct$_Counter_$1477_storage_ptr_$",
+                        "typeString": "function (struct Counters.Counter storage pointer) view returns (uint256)"
+                      }
+                    },
+                    "id": 1836,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "304:12:12",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "nodeType": "VariableDeclarationStatement",
+                  "src": "288:28:12"
+                },
+                {
+                  "expression": {
+                    "arguments": [],
+                    "expression": {
+                      "argumentTypes": [],
+                      "expression": {
+                        "id": 1838,
+                        "name": "id",
+                        "nodeType": "Identifier",
+                        "overloadedDeclarations": [],
+                        "referencedDeclaration": 1827,
+                        "src": "326:2:12",
+                        "typeDescriptions": {
+                          "typeIdentifier": "t_struct$_Counter_$1477_storage",
+                          "typeString": "struct Counters.Counter storage ref"
+                        }
+                      },
+                      "id": 1840,
+                      "isConstant": false,
+                      "isLValue": true,
+                      "isPure": false,
+                      "lValueRequested": false,
+                      "memberName": "increment",
+                      "nodeType": "MemberAccess",
+                      "referencedDeclaration": 1503,
+                      "src": "326:12:12",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_function_internal_nonpayable$_t_struct$_Counter_$1477_storage_ptr_$returns$__$bound_to$_t_struct$_Counter_$1477_storage_ptr_$",
+                        "typeString": "function (struct Counters.Counter storage pointer)"
+                      }
+                    },
+                    "id": 1841,
+                    "isConstant": false,
+                    "isLValue": false,
+                    "isPure": false,
+                    "kind": "functionCall",
+                    "lValueRequested": false,
+                    "names": [],
+                    "nodeType": "FunctionCall",
+                    "src": "326:14:12",
+                    "tryCall": false,
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_tuple$__$",
+                      "typeString": "tuple()"
+                    }
+                  },
+                  "id": 1842,
+                  "nodeType": "ExpressionStatement",
+                  "src": "326:14:12"
+                },
+                {
+                  "expression": {
+                    "id": 1843,
+                    "name": "newID",
+                    "nodeType": "Identifier",
+                    "overloadedDeclarations": [],
+                    "referencedDeclaration": 1833,
+                    "src": "357:5:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "functionReturnParameters": 1831,
+                  "id": 1844,
+                  "nodeType": "Return",
+                  "src": "350:12:12"
+                }
+              ]
+            },
+            "functionSelector": "e8927fbc",
+            "id": 1846,
+            "implemented": true,
+            "kind": "function",
+            "modifiers": [],
+            "name": "increase",
+            "nameLocation": "238:8:12",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1828,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "246:2:12"
+            },
+            "returnParameters": {
+              "id": 1831,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1830,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1846,
+                  "src": "265:7:12",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 1829,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "265:7:12",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "264:9:12"
+            },
+            "scope": 1847,
+            "src": "229:140:12",
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "public"
+          }
+        ],
+        "scope": 1848,
+        "src": "137:234:12",
+        "usedErrors": []
+      }
+    ],
+    "src": "58:314:12"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.13+commit.abaa5c0e.Emscripten.clang"
+  },
+  "networks": {
+    "4": {
+      "events": {},
+      "links": {},
+      "address": "0x826EF209A7a5ce5725F0390ad4F291389957718A",
+      "transactionHash": "0x5d68fda024ec2654bbc1250a01d70a9aeaaad4a0fcef495303b9f3dc6c73eada"
+    },
+    "80001": {
+      "events": {},
+      "links": {},
+      "address": "0x38BcC482AB5875477E78201f41cbBE20ae5e0d87",
+      "transactionHash": "0x14f9500f9c9b0a13008e19925fa40a1ac06c0cedad163541fb95afe3e6804faf"
+    }
+  },
+  "schemaVersion": "3.4.7",
+  "updatedAt": "2022-05-18T07:52:18.007Z",
+  "networkType": "ethereum",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}

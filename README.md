@@ -40,3 +40,9 @@ Register an account with offworld.live, and click “Download” the plug-in. Yo
 **How to use**:
 
   TODO:...
+
+
+## migration
+
+1. set environment variables, `BLOCKCHAIN_PHRASE`, `INFURA_LINK`, etc.
+2. migrate to specific blockchain, for instance `truffle migrate --network rinkeby` if we want migrate to testnet *rinkeby*.
