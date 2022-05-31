@@ -1,0 +1,249 @@
+from flask import Blueprint,render_template, request, Response, abort
+import json
+from entity.UserEntity import LoginRequest, SignUpRequest
+from entity.ModelEntity import AvatarRequest, SaveModelRequest
+from service.UserService import UserService
+from service.ModelService import ModelService
+from service.ImgService import base64ToImg
+from service.EthService import genAssets
+
+routers = Blueprint('routers',__name__) 
+
+userService = UserService()
+modelService = ModelService()
+
+'''
+interfaces: 
+    1. login and wallet login
+    2. signup
+    3. subscribe
+    5. generate avatar images
+    7. select avatar image -> generate models -> return model_id
+    9. select model and save -> return id
+    10. model collect, delete, update
+'''
+
+@routers.route('/test', methods=['GET']) 
+def test(): 
+  res = Response()
+  res.data = "hello world"
+  return res
+
+@routers.route('/login', methods=['POST']) 
+def login(): 
+  """Example endpoint returning a list of colors by palette
+    This is using docstrings for specifications.
+    ---
+    parameters:
+      - name: palette
+        in: path
+        type: string
+        enum: ['all', 'rgb', 'cmyk']
+        required: true
+        default: all
+    definitions:
+      Palette:
+        type: object
+        properties:
+          palette_name:
+            type: array
+            items:
+              $ref: '#/definitions/Color'
+      Color:
+        type: string
+    responses:
+      200:
+        description: A list of colors (may be filtered by palette)
+        schema:
+          $ref: '#/definitions/Palette'
+        examples:
+          rgb: ['red', 'green', 'blue']
+    """
+  data = request.get_json()
+  login = LoginRequest(data)
+  user = userService.userLogin(login)
+  res = Response()
+  res.data = json.dumps(user)
+  return res
+
+@routers.route('/signup', methods=['POST'])
+def signup():
+  # Encode Data Entity
+  data = request.get_json()
+
+  # convert json to request entity
+  signUp = SignUpRequest(data)
+  
+  # Process service logic
+  user_id: int = userService.userSignUp(signUp)
+
+  # Encode response
+  res = Response()
+  res.data = str(user_id)
+  return res
+
+@routers.route('/subsribe', methods=['POST'])
+def subscribe():
+  res = Response()
+  res.data = "signup success"
+  return res
+
+# when selected avatar
+''' 
+POST http://47.100.69.211:8080/avatar/user/1
+req:
+{
+    "gender": true,
+    "avatar_id": 1
+}
+res:
+{'id': 2, 'hair_id': 5}
+''' 
+@routers.route('/avatar/user/<int:user_id>', methods=['POST'])
+def avatar(user_id: int):
+  # create model
+  data = request.get_json()
+  
+  req = AvatarRequest(data)
+
+  # generate head model
+  model_info = modelService.registerModel(user_id, req.gender, req.avatar_id)
+  
+  # find its hair
+  res = Response()
+  res.data = json.dumps(model_info)
+  return res
+
+# when save model
+'''
+PUT http://47.100.69.211:8080/model/1/user/1
+req:
+{
+    "eye_id": 1, 
+    "shoes_id": 1, 
+    "hair_id" : 1, 
+    "hat_id" : 1, 
+    "coat_id": 1, 
+    "pants_id" : 1, 
+    "glasses_id": 1
+}
+res:
+update 1 success
+'''
+@routers.route('/model/<int:model_id>/user/<int:user_id>', methods=['PUT'])
+def saveModel(user_id: int, model_id: int):
+  # save model state
+  # add avatar to hub
+  data = request.get_json()
+  
+  req = SaveModelRequest(data)
+  modelService.updateModel(user_id, model_id, req)
+
+  res = Response()
+  res.data = "update {0} success".format(model_id)
+  return res
+
+# when don' t save
+'''
+DELETE http://47.100.69.211:8080/model/1/user/1
+res:
+delete model 1 success
+'''
+@routers.route('/model/<int:model_id>/user/<int:user_id>', methods=['DELETE'])
+def hideModel(user_id: int, model_id: int):
+  # set model state  
+  modelService.hideModel(user_id, model_id)
+
+  res = Response()
+  res.data = "delete model {0} success".format(model_id)
+  return res
+
+# get model
+'''
+GET http://47.100.69.211:8080/model/1/user/1
+res:
+{
+    "id": 1,
+    "gender": true,
+    "avatar_id": 1,
+    "eye_id": 1,
+    "shoes_id": 1,
+    "hair_id": 1,
+    "hat_id": 1,
+    "coat_id": 1,
+    "pants_id": 1,
+    "glasses_id": 1
+}
+'''
+@routers.route('/model/<int:model_id>/user/<int:user_id>', methods=['GET'])
+def getModel(user_id: int, model_id: int):
+  # save model state
+  # add avatar to hub
+  m = modelService.getModel(user_id, model_id)
+
+  res = Response()
+  res.data = json.dumps(m)
+  return res
+
+
+
+# get models
+'''
+GET http://47.100.69.211:8080/models/user/1
+res:
+[{"id": 3, "gender": true, "avatar_id": 1, "eye_id": null, "shoes_id": null, "hair_id": null, "hat_id": null, "coat_id":
+null, "pants_id": null, "glasses_id": null}]
+'''
+@routers.route('/models/user/<int:user_id>', methods=['GET'])
+def getModels(user_id: int):
+  # set model state  
+  m = modelService.getModels(user_id)
+
+  res = Response()
+  res.data = json.dumps(m)
+  return res
+
+# upload images to server
+'''
+POST http://47.100.69.211:8080/img
+req:
+{
+    "id": 1,
+    "img": ""
+}
+
+notice: this image is base64 code generated by canvas.toDataUrl
+
+'''
+@routers.route('/img', methods=['POST'])
+def saveImg():
+
+    req = request.get_json()
+    id = req["id"]
+    data = req["img"]
+    res = Response()
+    if (id and data):
+        base64ToImg(id, data)
+    return res
+
+
+@routers.route('/assets', methods=['GET'])
+def genAssets():
+    res = Response()
+    res.data = json.dumps(genAssets())
+    return res
+ 
+
+# get cover
+# @routers.route('/cover/user/<int:user_id>', methods=['GET'])
+# def getCover(user_id: int):
+#   # set hub state
+#   data = request.get_json()
+  
+#   id: int = data.get("id")
+#   gender: bool = data.get("gender")
+#   modelService.updateGender(id, gender)
+
+#   res = Response()
+#   res.data = "update {0} success".format(attr)
+#   return res
