@@ -10,37 +10,31 @@ The application scenarios for your digital identities are boundless, including:
 video conferencing, webcasting, virtual social networking, and even web3 games.
 
 **How to use:**
-1.	Browse VOKA website: www.voka.tech. 
-2.	Connect your wallet or create an account. 
-3.	The protocol will scan the available NFT for generation in your wallet.
-4.	If don’t have available NFT, you can use the Anime PFP Generation to create your own anime PFP.
-5.	The protocol will generate 3D avatar from the selected anime display picture.
-6.	After the generation, also can modify the assets of avatar, such as: clothes, hair style/color, eyeballs, and etc. 
-7.	Not only the avatar can be saved on our server, we also support avatar mint. In order to ensure the avatar exclusive, the protocol will automatically remove the anime PFP from our system once the avatar mint.
-8.	Our avatar standard format is suitable for the most of 3D engines (Unity or Unreal Engine) or Metaverse scenarios (Sandbox or Decentraland). In the coming future, we will provide SDK to import avatar file for metaverse creators and gaming developers. 
+1.	How to use:
+1.	Connect your wallet or create an account. 
+2.	The protocol will scan the available NFT for generation in your wallet.
+3.	If don’t have available NFT, you can use the Anime PFP Generation to create your own anime PFP.
+4.	The protocol will generate 3D avatar from the selected anime display picture.
+5.	After the generation, also can modify the assets of avatar, such as: clothes, hair style/color, eyeballs, and etc. 
+6.	Not only the avatar can be saved on our server, we also support avatar mint. In order to ensure the avatar exclusive, the protocol will automatically remove the anime PFP from our system once the avatar mint.
+7.	Our avatar standard format is suitable for the most of 3D engines (Unity or Unreal Engine) or Metaverse scenarios (Sandbox or Decentraland). In the coming future, we will provide SDK to import avatar file for metaverse creators and gaming developers. 
 
-## Bonus:
+**The Web 3.0 technologies use in this project**
+1.	Solidity
+2.	Truffle
+3.	Infura
+4.	OpenZeppelin NFT standard
+5.	OpenSea API
+6.	MetaMask API
+7.	IPFS (to be continue…)
 
-**PC expression capture software:**
+## $Bonus:
+•	ERC-721 Passport Standard (ERC-721P)
+We generated a new ERC721 Standard by modifying OpenZeppelina NFT standard (ERC721URIStorage.sol). We called the new ERC721 standard as “Passport” (ERC-721P). 
+ERC-721P is a summary for the avatar mint which includes PFP, 3D avatar, clothes, accessories, and so on. In order to save gas fee for users, ERC-721P also can mint all items in one time. 
 
-We also provide a UE5 PC expression capture software like Hologram for live-streaming and online chat. 
-The software is support facial and upper limb capture.  
-
-Before to use:
-1. Since we don’t have enough time to create own UE live-streaming function, we use [3rd party UE plug-in](https://offworld.live/). 
-2. In order to activate plug-in, you need to create an account on https://offworld.live/. 
-3. Go to https://offworld.live/download-center, and click the “FREE DOWNLOAD” button.
-Register an account with offworld.live, and click “Download” the plug-in. You can skip and cancel the download. 
-
-  <img width="362" alt="image" src="https://user-images.githubusercontent.com/19359257/168949465-4a5c0757-7aa5-476b-93ca-0bba9b26e5aa.png">
-  <img width="362" alt="image" src="https://user-images.githubusercontent.com/19359257/168949481-3a702918-7fb5-45b6-a8c0-86eb88e7bbdf.png">
-  
-4. Download the capture software from our [github page](https://github.com/Zhang-Tianxu/VokaAIProtocol/).
-
-**How to use**:
-
-  TODO:...
-
+•	PC expression capture software:
+We also provide a UE5 PC expression capture software like Hologram for live-streaming and online chat. The software is support facial and upper limb capture.  (Readme on the software folder)
 
 ## migration
 
