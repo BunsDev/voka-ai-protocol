@@ -3,16 +3,16 @@ import json
 import os
  
 
-class NFTUploaderError(Exception):
+class NFTStorageUploaderError(Exception):
     """
-    nft_uploader 专用错误
+    nft_storage_uploader 专用错误
     """
     pass
 
-class nft_uploader:
+class nft_storage_uploader:
     def __init__(self, base_url = "https://api.nft.storage", nft_storage_key = os.getenv("NFT_STORAGE_KEY")):
         if nft_storage_key == None:
-            raise NFTUploaderError("no nft.storage API key")
+            raise NFTStorageUploaderError("no nft.storage API key")
         self.base_url = base_url
         self.urls = {
                 'upload':self.base_url + '/upload',
@@ -130,7 +130,7 @@ class nft_uploader:
           dict:
         """
         if not isinstance(nft_properties, dict) or not isinstance(nft_file_properties,dict):
-            raise NFTUploaderError("type of nft_properties/nft_file_properties are not dict")
+            raise NFTStorageUploaderError("type of nft_properties/nft_file_properties are not dict")
         meta_json_str = '{"name": "' + nft_name + '","image": "undefined",'
         if len(nft_properties) > 0 or len(nft_file_properties) > 0:
             meta_json_str += '"properties":{'
@@ -197,7 +197,7 @@ class nft_uploader:
 
 if __name__ == "__main__":
     # usage demos
-    nftL = nft_uploader()
+    nftL = nft_storage_uploader()
     with open("head.png", 'rb') as f:
         err_code, json = nftL.upload_erc1155_nft('./head.png','resss',nft_properties={"aaa":"bbb"},nft_file_properties = {"videoClip": f})
     #err_code, json = nftL.list("2022-07-14T17%3A32%3A28Z",10)
