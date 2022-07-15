@@ -94,38 +94,78 @@ class nft_uploader:
         with open(file_path, 'rb') as f:
             return self.upload_file_from_content(file_name, f, file_type)
 
-    def upload_erc1155_nft(self, image_path, nft_name, nft_properties={}):
+    def upload_erc1155_nft(self, image_path, nft_name, nft_properties={},nft_file_properties={}):
         """
         Store an ERC-1155-compatible NFT as a collection of content-addressed objects connected by IPFS CID links.
-
-        TODO
+        Params:
+          image_path: nft对应图片的地址
+          nft_name: nft的名字
+          nft_properties: 
+            nft的属性，比如:
+              {"background":"orange", "clothes":"vietnum jacket", "eyes":"blue beams", "fur":"robot", "mouth":"grin"}
+          nft_file_properties
+            nft的文件属性，比如:
+              {"videoclip": <video file content>, "avatormesk" <mest>}
+        Return:
+          int: 0 表示成功，否则表示失败
+          dict:
         """
         with open(image_path, 'rb') as f:
-            meta_json_str = '{"name": "' + nft_name + '","image": "undefined"'
-            """
-            if len(nft_properties) > 0:
-                meta_json_str += ',"properties":{'
-                for pro in nft_properties:
-            """
-            meta_json_str += ',"properties": {"videoClip": "undefined"}}'
-            files = {'meta':(None, meta_json_str), 
-                    'image': ("res.png", f),
-                    'properties.videoClip': ("head.png", f),
-                    }
-            response = requests.post(self.urls["store"],files=files,headers=self.headers)
-            if response.status_code == 200:
-                try:
-                    json = response.json()
-                except:
-                    return -1, {}
-                else:
-                    if json['ok']:
-                        return 0, json['value']
-                    else:
-                        return -1, json['error']
+            return self.upload_erc1155_nft_content(f, nft_name,nft_properties,nft_file_properties)
+
+    def upload_erc1155_nft_content(self, image_content, nft_name, nft_properties={}, nft_file_properties={}):
+        """
+        Store an ERC-1155-compatible NFT as a collection of content-addressed objects connected by IPFS CID links.
+        Params:
+          image_content: nft对应图片文件内容
+          nft_name: nft的名字
+          nft_properties: 
+            nft的属性，比如:
+              {"background":"orange", "clothes":"vietnum jacket", "eyes":"blue beams", "fur":"robot", "mouth":"grin"}
+          nft_file_properties
+            nft的文件属性，比如:
+              {"videoclip": <video file content>, "avatormesk" <mest>}
+        Return:
+          int: 0 表示成功，否则表示失败
+          dict:
+        """
+        if not isinstance(nft_properties, dict) or not isinstance(nft_file_properties,dict):
+            raise NFTUploaderError("type of nft_properties/nft_file_properties are not dict")
+        meta_json_str = '{"name": "' + nft_name + '","image": "undefined",'
+        if len(nft_properties) > 0 or len(nft_file_properties) > 0:
+            meta_json_str += '"properties":{'
+
+        if len(nft_properties) > 0:
+            for pro in nft_properties:
+                meta_json_str += '"' + pro + '":"' + nft_properties[pro] + '",'
+        if len(nft_file_properties) > 0:
+            for f_pro in nft_file_properties:
+                meta_json_str += '"' + f_pro + '":"undefined",'
+
+        meta_json_str = meta_json_str[:-1]
+        if len(nft_properties) > 0 or len(nft_file_properties) > 0:
+            meta_json_str += '}'
+        meta_json_str += '}'
+        files = {'meta':(None, meta_json_str), 
+                'image': (nft_name, image_content),
+                }
+        if len(nft_file_properties) > 0:
+            for f_pro in nft_file_properties:
+                files["properties." + f_pro] = (f_pro,nft_file_properties[f_pro])
+        print(files)
+        response = requests.post(self.urls["store"],files=files,headers=self.headers)
+        if response.status_code == 200:
+            try:
+                json = response.json()
+            except:
+                return -1, {}
             else:
-                return -1, response.text
-        return -1, {}
+                if json['ok']:
+                    return 0, json['value']
+                else:
+                    return -1, json['error']
+        else:
+            return -1, response.text
 
     def upload_nft(self):
         """
@@ -156,11 +196,14 @@ class nft_uploader:
             return -1, {}
 
 if __name__ == "__main__":
+    # usage demos
     nftL = nft_uploader()
-    #err_code, json = nftL.upload_erc1155_nft('./head.png','resss',{"videoClip": 'no'})
+    with open("head.png", 'rb') as f:
+        err_code, json = nftL.upload_erc1155_nft('./head.png','resss',nft_properties={"aaa":"bbb"},nft_file_properties = {"videoClip": f})
     #err_code, json = nftL.list("2022-07-14T17%3A32%3A28Z",10)
-    err_code, json = nftL.upload_file_from_path("./head.png","image/png")
+    #err_code, json = nftL.upload_file_from_path("./head.png","image/png")
     if err_code == 0:
         print(json)
     else:
         print("failed")
+        print(json)
