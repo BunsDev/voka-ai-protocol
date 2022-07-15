@@ -23,4 +23,19 @@ contract vokaNFT is ERC721URIStorage {
         _tokenIds.increment();
         return newNFTID;
     }
+
+    function createNFTArr(address to, string[] memory tokenURIArr)
+        public
+        returns (uint256[] memory)
+    {
+        uint256[] memory newNFTIDArr = new uint256[](tokenURIArr.length);
+	for(uint i = 0;i < tokenURIArr.length;i++) {
+		uint256 newNFTID = _tokenIds.current();
+        	_safeMint(to, newNFTID);
+        	_setTokenURI(newNFTID, tokenURIArr[i]);
+		_tokenIds.increment();
+		newNFTIDArr[i] = newNFTID;
+	}
+        return newNFTIDArr;
+    }
 }

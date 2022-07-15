@@ -408,3 +408,38 @@ Summary
 > Total deployments:   3
 > Final cost:          0.007277631392698241 ETH
 
+
+
+-----------
+
+> Network name:    'rinkeby'
+> Network id:      4
+> Block gas limit: 30000000 (0x1c9c380)
+
+
+2_deploy_contracts.js
+=====================
+
+   Deploying 'vokaNFT'
+   -------------------
+   > transaction hash:    0x6caeb15f7f956d045c2b158602d43128dbd9d379a1aa9be44c3319b5d6254809
+   > Blocks: 1            Seconds: 8
+   > contract address:    0xB1ccC64e60E10629444c036015f929efC8306De3
+   > block number:        10945224
+   > block timestamp:     1656634794
+   > account:             0x111Aa21DceCe2b5d15d309c703d2C71a5498D3E9
+   > balance:             0.165274244963260194
+   > gas used:            2845047 (0x2b6977)
+   > gas price:           2.500000008 gwei
+   > value sent:          0 ETH
+   > total cost:          0.007112617522760376 ETH
+
+   Pausing for 2 confirmations...
+
+   -------------------------------
+   > confirmation number: 1 (block: 10945225)
+   > confirmation number: 2 (block: 10945226)
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:     0.007112617522760376 ETH
