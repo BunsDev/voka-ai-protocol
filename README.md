@@ -1,5 +1,27 @@
 # VOKA AI PROTOCOL
 
+## FileCoin Hackathon
+
+During the File Coin Hackathon, we make the following improvements:
+
+1. migrate NFT storage to **IPFS** (*nft.storage*) from ordinary database
+
+    Storage is an important part of NFT, storing NFT in decentralized storage increases the credibility of NFT.
+
+    [NFT.Storage](https://nft.storage/) is a long-term storage service designed for off-chain NFT datam, it's data is content addressed using IPFS.
+
+    Based on NFT.Storage, we successfully migrated storage to IPFS (a protocol and peer-to-peer network for storing and sharing data in a distributed file system).
+
+    In order to be compatible with our existing Flask backend, we need to use Python to interact with NFT.Storage. Unfortunately, official Python client library [python-client](https://github.com/nftstorage/python-client) not working properly. We implemented our own [nft_info](./backend/storage/nft_info.py) and [nft_storage_uploader](./backend/storage/nft_storage_uploader.py), which two class are used to upload NFT data Upload to NFT.Storage
+
+2. modify the NFT smart contract, to
+
+    Voka AI generates multiple anime avatars one at once, and the user may like several of them. In this case, smart contract needs to mint multiple NFTs, we found that compare to mint NFT separately, mint multiple NFTs at once can save some gas consumption.
+
+    Based on the above finding, we add a new interface `createNFTArr(address to, string[] memory tokenURIArr)` to smart contract, supports mint multiple NFTs at once.
+
+3. Pixel style
+
 ## Introduction:
 ***VOKA AI Protocol*** is the embodiment of a new generation of Web 3.0 technologies. 
 Not only are we capable of **generating exclusive anime avatars through our proprietary AI technology**; 
