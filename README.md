@@ -14,13 +14,17 @@ During the File Coin Hackathon, we make the following improvements:
 
     In order to be compatible with our existing Flask backend, we need to use Python to interact with NFT.Storage. Unfortunately, official Python client library [python-client](https://github.com/nftstorage/python-client) not working properly. We implemented our own [nft_info](./backend/storage/nft_info.py) and [nft_storage_uploader](./backend/storage/nft_storage_uploader.py), which two class are used to upload NFT data Upload to NFT.Storage
 
-2. modify the NFT smart contract, to
+2. modify the NFT smart contract
 
-    Voka AI generates multiple anime avatars one at once, and the user may like several of them. In this case, smart contract needs to mint multiple NFTs, we found that compare to mint NFT separately, mint multiple NFTs at once can save some gas consumption.
+    Voka AI generates multiple anime avatars one at once, and the user may like several of them. In this case, smart contract needs to mint multiple NFTs, we found that compare to mint NFT separately, mint multiple NFTs at once can save up to a quarter of the gas consumption.
+    
+    <img width="570" alt="image" src="https://user-images.githubusercontent.com/19359257/179346267-c4afdc61-7617-4fc2-8afd-e0a1c5c70508.png">
 
     Based on the above finding, we add a new interface `createNFTArr(address to, string[] memory tokenURIArr)` to smart contract, supports mint multiple NFTs at once.
 
 3. Pixel style
+
+    TODO: modification of AI
 
 ## Introduction:
 ***VOKA AI Protocol*** is the embodiment of a new generation of Web 3.0 technologies. 
