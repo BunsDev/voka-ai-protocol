@@ -443,3 +443,73 @@ Summary
    > Saving artifacts
    -------------------------------------
    > Total cost:     0.007112617522760376 ETH
+
+
+## mumbai test net
+
+Starting migrations...
+======================
+> Network name:    'matic'
+> Network id:      80001
+> Block gas limit: 20000000 (0x1312d00)
+
+
+1_initial_migration.js
+======================
+
+   Deploying 'Migrations'
+   ----------------------
+   > transaction hash:    0xf4af8a77f78c1b7c0bb1907219739ddbe98c1015822d64746c88c0c5bd9ccc87
+   > Blocks: 2            Seconds: 9
+   > contract address:    0xb14E3e247806311585aAf7b049F76fa9159F504D
+   > block number:        27380771
+   > block timestamp:     1659061161
+   > account:             0x111Aa21DceCe2b5d15d309c703d2C71a5498D3E9
+   > balance:             5.980602924784911591
+   > gas used:            250154 (0x3d12a)
+   > gas price:           2.500000018 gwei
+   > value sent:          0 ETH
+   > total cost:          0.000625385004502772 ETH
+
+   Pausing for 2 confirmations...
+
+   -------------------------------
+   > confirmation number: 1 (block: 27380773)
+   > confirmation number: 2 (block: 27380774)
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:     0.000625385004502772 ETH
+
+
+2_deploy_contracts.js
+=====================
+
+   Deploying 'vokaNFT'
+   -------------------
+   > transaction hash:    0x6dc10604e101f228a6b0019f506afbdc303b7377b2bf8a14d3db934ad25161ef
+   > Blocks: 3            Seconds: 13
+   > contract address:    0xf009c3a1704d9864d02BE066eac2753BE889E65C
+   > block number:        27380781
+   > block timestamp:     1659061211
+   > account:             0x111Aa21DceCe2b5d15d309c703d2C71a5498D3E9
+   > balance:             5.973375524750082332
+   > gas used:            2845047 (0x2b6977)
+   > gas price:           2.500000012 gwei
+   > value sent:          0 ETH
+   > total cost:          0.007112617534140564 ETH
+
+   Pausing for 2 confirmations...
+
+   -------------------------------
+   > confirmation number: 1 (block: 27380783)
+   > confirmation number: 2 (block: 27380784)
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:     0.007112617534140564 ETH
+
+Summary
+=======
+> Total deployments:   2
+> Final cost:          0.007738002538643336 ETH

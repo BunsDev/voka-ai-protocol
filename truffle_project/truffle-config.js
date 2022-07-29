@@ -23,6 +23,7 @@ const seed_phrase = process.env.BLOCKCHAIN_PHRASE;
 const infura_rinkeby_link = process.env.INFURA_RINKEBY_LINK_WSS;
 const infura_ropsten_link = process.env.INFURA_ROPSTEN_LINK_WSS;
 const mumbai_link = process.env.MUMBAI_LINK;
+//const mumbai_link = 'https://rpc-mumbai.maticvigil.com';
 
 module.exports = {
   /**
