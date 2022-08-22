@@ -10,7 +10,6 @@ The application scenarios for your digital identities are boundless, including:
 video conferencing, webcasting, virtual social networking, and even web3 games.
 
 **How to use:**
-1.	How to use:
 1.	Connect your wallet or create an account. 
 2.	The protocol will scan the available NFT for generation in your wallet.
 3.	If don’t have available NFT, you can use the Anime PFP Generation to create your own anime PFP.
