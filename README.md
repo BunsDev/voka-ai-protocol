@@ -25,7 +25,7 @@ video conferencing, webcasting, virtual social networking, and even web3 games.
 4.	OpenZeppelin NFT standard
 5.	OpenSea API
 6.	MetaMask API
-7.	IPFS
+7.	Filecoin (IPFS) NFT.Storage API
 
 ## $Bonus:
 •	ERC-721 Passport Standard (ERC-721P)
