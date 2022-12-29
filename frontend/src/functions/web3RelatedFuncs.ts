@@ -18,32 +18,28 @@ const web3 = new Web3(web3Provider);
 export function isMetaMaskInstalled() {
     //Have to check the ethereum binding on the window object to see if it's installed
     return Boolean(ethereum && ethereum.isMetaMask);
-};
+}
 
 export async function MetaLogin() {
     //Now we check to see if MetaMask is installed
     if (!isMetaMaskInstalled()) {
-    //If it isn't installed we ask the user to click to install it
+        //If it isn't installed we ask the user to click to install it
         ElMessage.info("Install MetaMask!");
-	onboarding.startOnboarding();
+        onboarding.startOnboarding();
     } else {
         try {
             // Will open the MetaMask UI
-	    await ethereum.request({ method: "eth_requestAccounts" });
-	    //we use eth_accounts because it returns a list of addresses owned by us.
-	    const accounts = await ethereum.request({
+            await ethereum.request({ method: "eth_requestAccounts" });
+            //we use eth_accounts because it returns a list of addresses owned by us.
+            const accounts = await ethereum.request({
                 method: "eth_accounts",
             });
             ElMessage.success("Get Wallet Address Successfully!");
             if (accounts.length > 0) {
-	        console.log(accounts);
+                console.log(accounts);
             }
         } catch (error) {
-	    console.error(error);
+            console.error(error);
         }
     }
-};
-
-export function hello() {
-	alert("hello");
 }

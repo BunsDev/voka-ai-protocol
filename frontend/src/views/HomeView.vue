@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import MetaMask from '@/components/Metamask.vue'; // @ is an alias to /src
+import MetaMask from '@/components/MetaMask.vue'; // @ is an alias to /src
 
 export default defineComponent({
   name: 'HomeView',
