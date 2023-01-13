@@ -19,6 +19,8 @@
 import { ref, defineProps, onMounted, computed, watch } from 'vue';
 import { getMetamaskSelectedAddress, MetaLogin } from '@/functions/MetamaskFunctions/MetaMaskRelatedFuncs';
 import { mintNFTByGroupId, getNFTNum, getRemainNFTNumByGroupId, isGroupLocked, getUnlockTimeStampByGroupID, timeStamp2Date } from '@/functions/SmartContracts/SunWingsNFT/SunWingsNFTFuncs';
+import { switchChain, addChain } from '@/functions/MetamaskFunctions/MetaMaskRelatedFuncs';
+import { polygon_testnet_mumbai } from '@/functions/MetamaskFunctions/ChainInfo';
 import { ElMessage, ElMessageBox, ElNotification } from "element-plus";
 import type { Action } from 'element-plus'
 import store from '@/store';
@@ -50,11 +52,17 @@ const isNFTLocked = ref(true);
 const UnlockDate = ref("");
 const RemainNFTNum = ref(0);
 
+const switch2Mumbai = async() => {
+    await switchChain("0x13881", () => {
+        addChain(polygon_testnet_mumbai);
+    });
+}
+
 const mintNFT = async () => {
     let continueMint = true;
     if (currentChainIdInfo.value != "0x13881") {
         console.log(currentChainIdInfo.value);
-        await ElMessageBox.confirm('当前链不是Mumbai!','切换到Mumbai', {
+        await ElMessageBox.confirm('切换到测试链Mumbai!','当前不是Mumbai测试链', {
             // if you want to disable its autofocus
             // autofocus: false,
             confirmButtonText: '好的',
@@ -62,7 +70,7 @@ const mintNFT = async () => {
             type: 'warning',
             })
             .then(() => {
-                ElMessage.info("同意切换");
+                switch2Mumbai();
             })
             .catch(() => {
                 ElMessage.info("放弃mint");
@@ -75,7 +83,7 @@ const mintNFT = async () => {
     const address  = getMetamaskSelectedAddress();
     if(!address) {
         //ElMessage.info("请链接MetaMask")
-        ElMessageBox.alert('请连接MetaMask后再Mint', '未连接MetaMask', {
+        await ElMessageBox.alert('请连接MetaMask后再Mint', '未连接MetaMask', {
             // if you want to disable its autofocus
             // autofocus: false,
             confirmButtonText: 'OK',

@@ -34,8 +34,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, watch } from 'vue';
 import { useRouter } from "vue-router";
-import { MetaLogin, isMetaMaskConnected, getCurrentNetworkId, getMetamaskSelectedAddress, switchChain, addChain } from '@/functions/MetamaskFunctions/MetaMaskRelatedFuncs';
-import { polygon_testnet_mumbai } from '@/functions/MetamaskFunctions/ChainInfo';
+import { MetaLogin, isMetaMaskConnected, getCurrentNetworkId, getMetamaskSelectedAddress } from '@/functions/MetamaskFunctions/MetaMaskRelatedFuncs';
 import { getNFTNum } from '@/functions/SmartContracts/SunWingsNFT/SunWingsNFTFuncs';
 import store from '@/store';
 import { useStore } from 'vuex';
@@ -64,16 +63,8 @@ onMounted(() => {
 })
 
 
-const addMumbai2Metamask = async() => {
-    await switchChain("0x13881", () => {
-        addChain(polygon_testnet_mumbai);
-    });
-    //const res = await addChain(polygon_testnet_mumbai);
-    //console.log(res);
-}
 
 const LoginMetaMask = async () => {
-    await addMumbai2Metamask();
     const res = await MetaLogin();
     isLogin.value = isMetaMaskConnected();
 }
