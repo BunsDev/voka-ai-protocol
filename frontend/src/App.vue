@@ -1,10 +1,18 @@
 <template>
-  <nav>
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-  </nav>
-  <router-view/>
+<el-container>
+      <el-header>
+          <header-view></header-view>
+      </el-header>
+      <el-main>
+        <router-view class="main"></router-view>
+      </el-main>
+      <el-footer>Footer</el-footer>
+    </el-container>
 </template>
+
+<script setup lang="ts">
+import HeaderView from "@/components/header/HeaderVue.vue";
+</script>
 
 <style>
 #app {
@@ -13,6 +21,13 @@
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  padding: 0px !important;;
+  margin: 0px !important;;
+}
+
+html, body {
+  margin: 0px !important;
+  padding: 0px !important;
 }
 
 nav {

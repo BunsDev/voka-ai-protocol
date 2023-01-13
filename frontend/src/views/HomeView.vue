@@ -1,17 +1,5 @@
 <template>
   <div class="home">
-    <MetaMask></MetaMask>
+    <h1>This is an Home page</h1>
   </div>
 </template>
-
-<script lang="ts">
-import { defineComponent } from 'vue';
-import MetaMask from '@/components/MetaMask.vue'; // @ is an alias to /src
-
-export default defineComponent({
-  name: 'HomeView',
-  components: {
-    MetaMask,
-  },
-});
-</script>

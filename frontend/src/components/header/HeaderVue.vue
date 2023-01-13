@@ -1,0 +1,74 @@
+<template>
+ <el-row>
+    <el-col :span="8" class="left">
+        <div class="left">
+        </div>
+    </el-col>
+
+    <el-col :span="8">
+        <div class="middle">
+            <p v-if="isLogin">你拥有的NFT数量：{{ NFTNum }}</p>
+            <p v-else>请登录MetaMask</p>
+        </div>
+    </el-col>
+
+    <el-col :span="8">
+        <div class="right">
+            <el-button plain @click="toAbout">About</el-button>
+            <img src="@/assets/metamask-fox.svg" @click="LoginMetaMask" />
+        </div>
+    </el-col>
+
+  </el-row>
+</template>
+
+<script setup lang="ts">
+import { ref, onMounted } from 'vue';
+import { useRouter } from "vue-router";
+//import { useLoginStore } from "@/store/login";
+import { MetaLogin, isMetaMaskLogin, getMetamaskSelectedAddress } from '@/functions/MetaMaskRelatedFuncs';
+import { getNFTNum } from '@/functions/SmartContracts/SunWingsNFT/SunWingsNFTFuncs';
+const router = useRouter();
+//const loginStore = useLoginStore();
+
+const NFTNum = ref(0);
+const isLogin = ref(false);
+
+onMounted(() => {
+    getNFTNum2();
+    isMetaLogin();
+})
+
+const LoginMetaMask = async () => {
+    const res = await MetaLogin();
+    isLogin.value = isMetaMaskLogin();
+}
+
+
+const isMetaLogin = async () => {
+    const res = await isMetaMaskLogin();
+    isLogin.value = res;
+}
+
+const getNFTNum2 = async () => {
+    const address  = await getMetamaskSelectedAddress();
+    NFTNum.value = await getNFTNum(address);
+}
+
+const toAbout = () => {
+  router.push({
+    name: "about",
+  });
+};
+
+</script>
+
+<style scoped lang="scss">
+.middle {
+  text-align: center;
+}
+
+.right {
+  text-align: right;
+}
+</style>

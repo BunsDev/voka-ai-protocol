@@ -7,6 +7,7 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 contract vokaNFT is ERC721URIStorage {
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
+    uint period1 = 1673240400;
 
     constructor() ERC721("vokaNFT", "VK") {
         _tokenIds.increment();
@@ -16,6 +17,9 @@ contract vokaNFT is ERC721URIStorage {
         public
         returns (uint256)
     {
+        if(block.timestamp < period1) {
+            return 0;
+        }
         uint256 newNFTID = _tokenIds.current();
         _safeMint(to, newNFTID);
         _setTokenURI(newNFTID, tokenURI);

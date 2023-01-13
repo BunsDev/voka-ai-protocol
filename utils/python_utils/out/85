@@ -1,0 +1,19 @@
+{
+    "name": "idol 3",
+    "description": "nft of idol 3",
+    "image": "ipfs://QmZDDk9RmbeuA7C38K1c1ofG7ZyQjnD7CDjadeknFSGtFr",
+    "attributes": [
+        {
+            "trait_type": "Clothes",
+            "value": "Pink"
+        },
+        {
+            "trait_type": "Hat",
+            "value": "Pink"
+        },
+        {
+            "trait_type": "Background",
+            "value": "Pink Blue"
+        }
+    ]
+}

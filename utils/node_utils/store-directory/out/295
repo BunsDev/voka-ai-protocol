@@ -1,0 +1,19 @@
+{
+    "name": "idol 8",
+    "description": "nft of idol 8",
+    "image": "ipfs://QmNcteDWYwZ5Ad4ndQ61VWN8XJrvhkM5BWvvmbSE4Vcynq",
+    "attributes": [
+        {
+            "trait_type": "Clothes",
+            "value": "Dark Green"
+        },
+        {
+            "trait_type": "Hat",
+            "value": "Light Green"
+        },
+        {
+            "trait_type": "Background",
+            "value": "New Punk Blue Green"
+        }
+    ]
+}

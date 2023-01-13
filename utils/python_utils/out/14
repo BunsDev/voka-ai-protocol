@@ -1,0 +1,19 @@
+{
+    "name": "idol 1",
+    "description": "nft of idol 1",
+    "image": "ipfs://QmQxKpKDNezonb23nAtDpt5cP93c1w4HvV32bSYQYNafVp",
+    "attributes": [
+        {
+            "trait_type": "Clothes",
+            "value": "Green"
+        },
+        {
+            "trait_type": "Hat",
+            "value": "White"
+        },
+        {
+            "trait_type": "Background",
+            "value": "New Punk Blue"
+        }
+    ]
+}
