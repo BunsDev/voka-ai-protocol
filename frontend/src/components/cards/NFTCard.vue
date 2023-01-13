@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import { ref, defineProps, onMounted, computed, watch } from 'vue';
-import { getMetamaskSelectedAddress, MetaLogin } from '@/functions/MetamaskFunctions/MetaMaskRelatedFuncs';
+import { isMetaMaskInstalled, getMetamaskSelectedAddress, MetaLogin } from '@/functions/MetamaskFunctions/MetaMaskRelatedFuncs';
 import { mintNFTByGroupId, getNFTNum, getRemainNFTNumByGroupId, isGroupLocked, getUnlockTimeStampByGroupID, timeStamp2Date } from '@/functions/SmartContracts/SunWingsNFT/SunWingsNFTFuncs';
 import { switchChain, addChain } from '@/functions/MetamaskFunctions/MetaMaskRelatedFuncs';
 import { polygon_testnet_mumbai } from '@/functions/MetamaskFunctions/ChainInfo';
@@ -60,8 +60,14 @@ const switch2Mumbai = async() => {
 
 const mintNFT = async () => {
     let continueMint = true;
+    if (!isMetaMaskInstalled()) {
+        ElMessage({
+            message: '未安装MetaMask',
+            type: 'warning',
+        })
+        return;
+    }
     if (currentChainIdInfo.value != "0x13881") {
-        console.log(currentChainIdInfo.value);
         await ElMessageBox.confirm('切换到测试链Mumbai!','当前不是Mumbai测试链', {
             // if you want to disable its autofocus
             // autofocus: false,

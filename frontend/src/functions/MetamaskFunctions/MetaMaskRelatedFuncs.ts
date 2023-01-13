@@ -73,14 +73,23 @@ export async function MetaLogin() {
 }
 
 export function getCurrentNetworkId() {
+    if (!isMetaMaskInstalled()) {
+        return "0";
+    }
     return ethereum.networkVersion;
 }
 
 export async function isMetaMaskConnected() {
+    if (!isMetaMaskInstalled()) {
+        return false;
+    }
     const res = await ethereum.isConnected()
 }
 
 export function getMetamaskSelectedAddress() {
+    if (!isMetaMaskInstalled()) {
+        return null;
+    }
     if(!ethereum.isConnected()) {
         // 未登陆
         return null;
@@ -89,6 +98,9 @@ export function getMetamaskSelectedAddress() {
 }
 
 export async function signAndSendTransaction(tx: any) {
+    if (!isMetaMaskInstalled()) {
+        return;
+    }
     if(!ethereum.isConnected()) {
         ElMessage.warning("connect please!");
     }
@@ -105,7 +117,9 @@ export async function signAndSendTransaction(tx: any) {
 }
 
 export async function addChain(networkDataArray: any) {
-    console.log("addChain");
+    if (!isMetaMaskInstalled()) {
+        return false;
+    }
     await ethereum
       .request({
         method: "wallet_addEthereumChain",
@@ -126,6 +140,9 @@ interface switchChainCallback {
 
 // targetChainId必须是十六进制，比如0x13881
 export async function switchChain(targetChainId: string, notExistCallBack: switchChainCallback) {
+    if (!isMetaMaskInstalled()) {
+        return;
+    }
     try {
       await ethereum.request({
         method: 'wallet_switchEthereumChain',
@@ -143,6 +160,9 @@ export async function switchChain(targetChainId: string, notExistCallBack: switc
 }
 
 export async function callContractMethod(contract_address: string, method_data: string) {
+    if (!isMetaMaskInstalled()) {
+        return false;
+    }
     if(!ethereum.isConnected()) {
         ElMessage.warning("connect please!");
     }
@@ -165,14 +185,17 @@ export async function callContractMethod(contract_address: string, method_data: 
 }
 
 
-ethereum.on('connect', (connectInfo: any) => {
-        login();
-        console.log(connectInfo);
-        console.log(connectInfo.chainId);
-        chainCurrentChainId(connectInfo.chainId);
-});
 
-ethereum.on('disconnect', (error: any) => {
-        logout();
-        console.log(error);
-});
+if (isMetaMaskInstalled()) {
+    ethereum.on('connect', (connectInfo: any) => {
+            login();
+            console.log(connectInfo);
+            console.log(connectInfo.chainId);
+            chainCurrentChainId(connectInfo.chainId);
+    });
+    
+    ethereum.on('disconnect', (error: any) => {
+            logout();
+            console.log(error);
+    });
+}
