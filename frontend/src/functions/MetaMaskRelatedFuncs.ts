@@ -1,7 +1,7 @@
 import MetaMaskOnboarding from "@metamask/onboarding";
 import { ElMessage } from "element-plus";
 import Web3 from 'web3';
-//import { useLoginStore } from "@/store/login";
+import store from '@/store';
 
 const onboarding = new MetaMaskOnboarding();
 const { ethereum } = window as any;
@@ -9,8 +9,13 @@ const provider = "https://polygon-mumbai.infura.io/v3/46f3f0763c7f4b8ebbe94c74ff
 const web3Provider = new Web3.providers.HttpProvider(provider);
 const web3 = new Web3(web3Provider);
 
-//const loginStore = useLoginStore();
+function login() {
+    store.commit('login');
+}
 
+function logout() {
+    store.commit('logout');
+}
 
 //Created check function to see if the MetaMask extension is installed
 export function isMetaMaskInstalled() {
@@ -25,48 +30,43 @@ export async function MetaLogin() {
         ElMessage.info("请安装MetaMask!");
         onboarding.startOnboarding();
     } else {
-        try {
-            // Will open the MetaMask UI
-            await ethereum
-                .request({ method: "eth_requestAccounts" })
-                .then((result: any) => {
-                    console.log(result);
-                })
-                .catch((error:any) => {
-                    console.log(error);
-                });
-            //we use eth_accounts because it returns a list of addresses owned by us.
-            const accounts = await ethereum
-                .request({
-                    method: "eth_accounts",
-                })
-                .then((result: any) => {
-                    console.log(result);
-                })
-                .catch((error:any) => {
-                    console.log(error);
-                });
-            console.log("==========");
-            if (accounts.length > 0) {
-                ElMessage.success("Get Wallet Address Successfully!");
-                return true;
-            }
-        } catch (error) {
-            console.error(error);
-            return false;
-        }
-        return false;
+        // Will open the MetaMask UI
+        await ethereum
+            .request({ method: "eth_requestAccounts" })
+            .then((result: any) => {
+                console.log(result);
+            })
+            .catch((error:any) => {
+                console.log(error); // code: 4001表示用户拒绝请求
+            });
+
+        //we use eth_accounts because it returns a list of addresses owned by us.
+        await ethereum
+            .request({
+                method: "eth_accounts",
+            })
+            .then((result: any) => {
+                console.log(result); // 如果用户拒绝请求，这里回显示[]
+                if(result.length > 0) {
+                    login();
+                } else {
+                    logout();
+                }
+            })
+            .catch((error:any) => {
+                console.log(error);
+            });
     }
 }
 
-export async function isMetaMaskLogin() {
+export async function isMetaMaskConnected() {
     const res = await ethereum.isConnected()
 }
 
-export async function getMetamaskSelectedAddress(): Promise<string> {
+export function getMetamaskSelectedAddress() {
     if(!ethereum.isConnected()) {
         // 未登陆
-        return ""
+        return null;
     }
     return ethereum.selectedAddress;
 }

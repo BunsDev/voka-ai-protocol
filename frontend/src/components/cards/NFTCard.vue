@@ -17,9 +17,10 @@
 
 <script setup lang="ts">
 import { ref, defineProps, onMounted } from 'vue';
-import { getMetamaskSelectedAddress } from '@/functions/MetaMaskRelatedFuncs';
+import { getMetamaskSelectedAddress, MetaLogin } from '@/functions/MetaMaskRelatedFuncs';
 import { mintNFTByGroupId, getNFTNum, getRemainNFTNumByGroupId, isGroupLocked, getUnlockTimeStampByGroupID, timeStamp2Date } from '@/functions/SmartContracts/SunWingsNFT/SunWingsNFTFuncs';
-import { ElMessage } from "element-plus";
+import { ElMessage, ElMessageBox, ElNotification } from "element-plus";
+import type { Action } from 'element-plus'
 
 onMounted(() => {
     getUnlockTS();
@@ -38,12 +39,32 @@ const UnlockDate = ref("");
 const RemainNFTNum = ref(0);
 
 const mintNFT = async () => {
-    const address  = await getMetamaskSelectedAddress();
+    const address  = getMetamaskSelectedAddress();
+    if(!address) {
+        //ElMessage.info("请链接MetaMask")
+        ElMessageBox.alert('请连接MetaMask后再Mint', '未连接MetaMask', {
+            // if you want to disable its autofocus
+            // autofocus: false,
+            confirmButtonText: 'OK',
+            callback: (action: Action) => {
+                MetaLogin();
+            },
+        })
+        return;
+    }
     const res = await mintNFTByGroupId(address, props.groupId - 1);
     if(res) {
-        ElMessage.success("Mint成功");
+        ElNotification({
+            title: 'Mint成功',
+            message: '恭喜您，NFT已mint成功，您可去opensea查看。',
+            type: 'success',
+        })
     } else {
-        ElMessage.error("Mint失败");
+        ElNotification({
+            title: 'Mint失败',
+            message: 'NFT mint失败，请查看是否链接metamask',
+            type: 'warning',
+        })
     }
 }
 
