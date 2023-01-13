@@ -1,6 +1,6 @@
 FROM nginx:latest
 
+RUN rm /etc/nginx/nginx.conf /etc/nginx/conf.d/default.conf
 COPY frontend/dist /dist
-COPY frontend/docker_build/nginx.conf /nginx.conf
+COPY frontend/docker_build/nginx.conf /etc/nginx
 
-RUN cat /nginx.conf > /etc/nginx/nginx.conf
