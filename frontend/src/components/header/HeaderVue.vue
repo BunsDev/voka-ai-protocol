@@ -2,7 +2,7 @@
  <el-row>
     <el-col :span="8" class="left">
         <div class="left">
-            <p v-if="store.state.isLogin">connected</p>
+            <p v-if="isLogin2">connected</p>
             <p v-else>not connected</p>
         </div>
     </el-col>
@@ -32,23 +32,48 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, computed, watch } from 'vue';
 import { useRouter } from "vue-router";
-import { MetaLogin, isMetaMaskConnected, getMetamaskSelectedAddress } from '@/functions/MetaMaskRelatedFuncs';
+import { MetaLogin, isMetaMaskConnected, getCurrentNetworkId, getMetamaskSelectedAddress, switchChain, addChain } from '@/functions/MetamaskFunctions/MetaMaskRelatedFuncs';
+import { polygon_testnet_mumbai } from '@/functions/MetamaskFunctions/ChainInfo';
 import { getNFTNum } from '@/functions/SmartContracts/SunWingsNFT/SunWingsNFTFuncs';
 import store from '@/store';
+import { useStore } from 'vuex';
 const router = useRouter();
+let { state, commit, getters } = useStore();
+
+const isLogin2 = computed(() => {
+    return state.isLogin;
+})
+
+watch(isLogin2, (newVal, oldVal) => {
+    console.log(newVal);
+    console.log(oldVal);
+},{immediate: true, deep: true});
+
+
 
 const NFTNum = ref(0);
 const isLogin = ref(false);
 
 onMounted(() => {
+    console.log(getCurrentNetworkId());
     getNFTNum2();
     isMetaLogin();
     console.log(store.state.isLogin);
 })
 
+
+const addMumbai2Metamask = async() => {
+    await switchChain("0x13881", () => {
+        addChain(polygon_testnet_mumbai);
+    });
+    //const res = await addChain(polygon_testnet_mumbai);
+    //console.log(res);
+}
+
 const LoginMetaMask = async () => {
+    await addMumbai2Metamask();
     const res = await MetaLogin();
     isLogin.value = isMetaMaskConnected();
 }

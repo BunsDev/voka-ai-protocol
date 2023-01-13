@@ -2,7 +2,7 @@ import MetaMaskOnboarding from "@metamask/onboarding";
 import { ElMessage } from "element-plus";
 import Web3 from 'web3';
 import { abi } from './SunWingsNFTABI';
-import { callContractMethod } from '@/functions/MetaMaskRelatedFuncs';
+import { callContractMethod } from '@/functions/MetamaskFunctions/MetaMaskRelatedFuncs';
 
 const onboarding = new MetaMaskOnboarding();
 const { ethereum } = window as any;

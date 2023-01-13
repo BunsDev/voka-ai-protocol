@@ -2,7 +2,8 @@ import { createStore } from 'vuex'
 
 export default createStore({
   state: {
-    isLogin: false
+    isLogin: false,
+    metamaskChainId: "0x0"
   },
   getters: {
   },
@@ -12,6 +13,9 @@ export default createStore({
     },
     logout (state:any) {
         state.isLogin = false;
+    },
+    chaingeCurrentMetamaskChainId (state: any, data: any) {
+        state.metamaskChainId = data.chainId
     }
   },
   actions: {

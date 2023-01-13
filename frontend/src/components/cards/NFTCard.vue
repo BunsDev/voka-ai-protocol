@@ -16,11 +16,23 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps, onMounted } from 'vue';
-import { getMetamaskSelectedAddress, MetaLogin } from '@/functions/MetaMaskRelatedFuncs';
+import { ref, defineProps, onMounted, computed, watch } from 'vue';
+import { getMetamaskSelectedAddress, MetaLogin } from '@/functions/MetamaskFunctions/MetaMaskRelatedFuncs';
 import { mintNFTByGroupId, getNFTNum, getRemainNFTNumByGroupId, isGroupLocked, getUnlockTimeStampByGroupID, timeStamp2Date } from '@/functions/SmartContracts/SunWingsNFT/SunWingsNFTFuncs';
 import { ElMessage, ElMessageBox, ElNotification } from "element-plus";
 import type { Action } from 'element-plus'
+import store from '@/store';
+import { useStore } from 'vuex';
+let { state, commit, getters } = useStore();
+
+const currentChainIdInfo = computed(() => {
+    return state.metamaskChainId;
+})
+
+watch(currentChainIdInfo, (newVal, oldVal) => {
+    console.log(newVal);
+    console.log(oldVal);
+},{immediate: true, deep: true});
 
 onMounted(() => {
     getUnlockTS();
@@ -39,6 +51,27 @@ const UnlockDate = ref("");
 const RemainNFTNum = ref(0);
 
 const mintNFT = async () => {
+    let continueMint = true;
+    if (currentChainIdInfo.value != "0x13881") {
+        console.log(currentChainIdInfo.value);
+        await ElMessageBox.confirm('当前链不是Mumbai!','切换到Mumbai', {
+            // if you want to disable its autofocus
+            // autofocus: false,
+            confirmButtonText: '好的',
+            cancelButtonText: '取消',
+            type: 'warning',
+            })
+            .then(() => {
+                ElMessage.info("同意切换");
+            })
+            .catch(() => {
+                ElMessage.info("放弃mint");
+                continueMint = false;
+            });
+    }
+    if(!continueMint) {
+        return;
+    }
     const address  = getMetamaskSelectedAddress();
     if(!address) {
         //ElMessage.info("请链接MetaMask")

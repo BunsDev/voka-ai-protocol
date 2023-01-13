@@ -17,6 +17,15 @@ function logout() {
     store.commit('logout');
 }
 
+function chainCurrentChainId(chainId:string) {
+    console.log(chainId);
+    store.commit({
+        type: 'chaingeCurrentMetamaskChainId',
+        chainId: chainId
+    });
+
+}
+
 //Created check function to see if the MetaMask extension is installed
 export function isMetaMaskInstalled() {
     //Have to check the ethereum binding on the window object to see if it's installed
@@ -37,7 +46,11 @@ export async function MetaLogin() {
                 console.log(result);
             })
             .catch((error:any) => {
-                console.log(error); // code: 4001表示用户拒绝请求
+                if (error.code === 4001) {
+                    console.log("用户拒绝请求");
+                } else {
+                    console.log(error);
+                }
             });
 
         //we use eth_accounts because it returns a list of addresses owned by us.
@@ -57,6 +70,10 @@ export async function MetaLogin() {
                 console.log(error);
             });
     }
+}
+
+export function getCurrentNetworkId() {
+    return ethereum.networkVersion;
 }
 
 export async function isMetaMaskConnected() {
@@ -87,6 +104,44 @@ export async function signAndSendTransaction(tx: any) {
     return res;
 }
 
+export async function addChain(networkDataArray: any) {
+    console.log("addChain");
+    await ethereum
+      .request({
+        method: "wallet_addEthereumChain",
+        params: networkDataArray,
+      })
+      .then((result:any) => {
+          return true;
+      })
+      .catch((error: any) => {
+        console.log(error); 
+        return false;
+      })
+}
+
+interface switchChainCallback {
+  (): void;
+}
+
+// targetChainId必须是十六进制，比如0x13881
+export async function switchChain(targetChainId: string, notExistCallBack: switchChainCallback) {
+    try {
+      await ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: targetChainId }],
+      });
+    } catch (switchError: any) {
+      // This error code indicates that the chain has not been added to MetaMask.
+      if (switchError.code === 4902) {
+        notExistCallBack();
+        return;
+      }
+      // handle other "switch" errors
+      console.log(switchError); 
+    }
+}
+
 export async function callContractMethod(contract_address: string, method_data: string) {
     if(!ethereum.isConnected()) {
         ElMessage.warning("connect please!");
@@ -111,5 +166,13 @@ export async function callContractMethod(contract_address: string, method_data: 
 
 
 ethereum.on('connect', (connectInfo: any) => {
-	console.log(connectInfo);
+        login();
+        console.log(connectInfo);
+        console.log(connectInfo.chainId);
+        chainCurrentChainId(connectInfo.chainId);
+});
+
+ethereum.on('disconnect', (error: any) => {
+        logout();
+        console.log(error);
 });

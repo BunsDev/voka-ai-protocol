@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { MetaLogin, getMetamaskSelectedAddress } from '@/functions/MetaMaskRelatedFuncs';
+import { MetaLogin, getMetamaskSelectedAddress } from '@/functions/MetamaskFunctions/MetaMaskRelatedFuncs';
 import { mintNFTByGroupId, getNFTNum, getNFTURIByTokenId, getUnlockTimeStampByGroupID, timeStamp2Date } from '@/functions/SmartContracts/SunWingsNFT/SunWingsNFTFuncs';
 
 const NFTNum = ref(10);
