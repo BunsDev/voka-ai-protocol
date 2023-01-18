@@ -1,6 +1,6 @@
 <template>
   <div class="MetamaskConnect">
-    <el-tooltip class="box-item" effect="dark" content="点击连接MetaMask" placement="bottom" v-if="!_isConnected">
+    <el-tooltip class="box-item" effect="dark" content="Click to Install MetaMask" placement="bottom" v-if="!_isConnected">
       <div class="content-container metamask-connect-button" @click="_connectMetamask">
           <img class="logo" src="@/assets/metamask-fox.svg" />
           <span class="title">Connect Metamask</span>
@@ -15,6 +15,7 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, defineProps, watch } from 'vue';
 import { isMetaMaskConnected, connectMetamask } from '@/functions/MetamaskFunctions/MetaMaskRelatedFuncs';
+import { ElMessage } from "element-plus";
 import { useStore } from 'vuex';
 let { state } = useStore();
 
@@ -27,7 +28,16 @@ onMounted(() => {
 })
 
 const _connectMetamask = async () => {
-    await connectMetamask();
+    await connectMetamask(() => {
+        ElMessage.success("Connected!");
+    }, ()=> {
+        ElMessage.info("Connect Refused!")
+    }, ()=> {
+        ElMessage.error("Connect Failed!")
+
+    }, ()=>{
+        ElMessage.info("MetaMask Not Install!");
+    });
 }
 
 const _isConnected = computed(() => {

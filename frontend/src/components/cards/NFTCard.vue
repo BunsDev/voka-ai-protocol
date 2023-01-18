@@ -39,7 +39,6 @@ watch(currentChainIdInfo, (newVal, oldVal) => {
 */
 
 onMounted(() => {
-    console.log(props.imgUrl);
     getUnlockTS();
     getRemainNFT();
     isLocked();
