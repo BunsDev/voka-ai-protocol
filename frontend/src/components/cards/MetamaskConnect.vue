@@ -54,7 +54,7 @@ watch(_isConnected, (newVal, oldVal) => {
     border-radius: 5px;
     border-width: 1px;
     border-color: gray;
-    width: 25%;
+    width: 200px;
     height: 2em;
 
     display: flex;
