@@ -1,45 +1,41 @@
 <template>
   <div class="MetamaskConnect">
-    <el-tooltip class="box-item" effect="dark" content="点击连接MetaMask" placement="bottom" v-if="false">
-      <div class="content-container" @click="LoginMetaMask">
+    <el-tooltip class="box-item" effect="dark" content="点击连接MetaMask" placement="bottom" v-if="!_isConnected">
+      <div class="content-container metamask-connect-button" @click="_connectMetamask">
           <img class="logo" src="@/assets/metamask-fox.svg" />
           <span class="title">Connect Metamask</span>
       </div>
     </el-tooltip>
-    <div v-else>已登陆</div>
+    <div class="metamask-connected-info" v-else>
+      <p class="text">Metamask Connected!</p>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, defineProps } from 'vue';
-import { isMetaMaskInstalled, installMetamask, isMetaMaskConnected, connectMetamask, getMetamaskSelectedAddress, MetaLogin } from '@/functions/MetamaskFunctions/MetaMaskRelatedFuncs';
+import { ref, onMounted, computed, defineProps, watch } from 'vue';
+import { isMetaMaskConnected, connectMetamask } from '@/functions/MetamaskFunctions/MetaMaskRelatedFuncs';
 import { useStore } from 'vuex';
-let { state, commit, getters } = useStore();
-
-const isLogin = ref(false);
-
-onMounted(() => {
-  isMetaLogin();
-})
+let { state } = useStore();
 
 const props = defineProps<{
     type: string
 }>()
 
-const LoginMetaMask = async () => {
-    isLogin.value = await connectMetamask();
-}
-
-const isMetaLogin = async () => {
-    isLogin.value = isMetaMaskConnected();
-}
-
-const isLogin2 = computed(() => {
-    return state.isLogin;
+onMounted(() => {
+  isMetaMaskConnected();
 })
-/*
 
-watch(isLogin2, (newVal, oldVal) => {
+const _connectMetamask = async () => {
+    await connectMetamask();
+}
+
+const _isConnected = computed(() => {
+    return state.isMetamaskConnected;
+})
+
+/*
+watch(_isConnected, (newVal, oldVal) => {
     console.log(newVal);
     console.log(oldVal);
 },{immediate: true, deep: true});
@@ -73,6 +69,14 @@ watch(isLogin2, (newVal, oldVal) => {
     .title {
       font-size: 1em;
     }
-}
+  }
+  .metamask-connected-info {
+
+    .text {
+      font-style: italic;
+      font-size: 1em;
+      color: green;
+    }
+  }
 }
 </style>

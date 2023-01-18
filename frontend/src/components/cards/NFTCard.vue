@@ -1,11 +1,11 @@
 <template>
   <div class="NFTCard">
     <img
-    :src="props.imgUrl"
     class="image"
+    :src="props.imgUrl"
     />
-    <div style="padding: 14px">
-      <span>{{ props.nftName }}</span>
+    <div class="card-info">
+      <p>{{ props.nftName }}</p>
       <p>Unlock Time: {{ UnlockDate }}</p>
       <p>Remaining NFT Number: {{ RemainNFTNum }}</p>
       <div class="bottom">
@@ -39,6 +39,7 @@ watch(currentChainIdInfo, (newVal, oldVal) => {
 */
 
 onMounted(() => {
+    console.log(props.imgUrl);
     getUnlockTS();
     getRemainNFT();
     isLocked();
@@ -51,7 +52,7 @@ const props = defineProps<{
 }>()
 
 const isNFTLocked = ref(true);
-const UnlockDate = ref("敬请期待");
+const UnlockDate = ref("Stay tuned");
 const RemainNFTNum = ref(0);
 
 const switch2Mumbai = async() => {
@@ -146,7 +147,7 @@ const isLocked = async() => {
 const getUnlockTS = async () => {
     const timestamp: number = await getUnlockTimeStampByGroupID(props.groupId - 1);
     if(timestamp === 0) {
-        return "敬请期待";
+        return "Stay Tuned";
     }
     const date = timeStamp2Date(timestamp * 1000);
     UnlockDate.value = date.toString();
@@ -154,21 +155,26 @@ const getUnlockTS = async () => {
 
 </script>
 
-<style scoped>
-.time {
-  font-size: 12px;
-  color: #999;
-}
-
-.bottom {
-  margin-top: 13px;
-  line-height: 12px;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.image {
-  width: 100%;
-  display: block;
+<style scoped lang="scss">
+.NFTCard {
+    .card-info {
+        padding: 5px;
+        p {
+            margin-top: 5px;
+            margin-bottom: 5px;
+            font-size: 0.8em;
+            width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis; //文本溢出显示省略号
+            white-space: nowrap; //文本不会换行
+        }
+        .bottom {
+            padding-top: 10px;
+        }
+    }
+    .image {
+      width: 100%;
+      display: block;
+    }
 }
 </style>

@@ -10,18 +10,13 @@ const web3Provider = new Web3.providers.HttpProvider(provider);
 const web3 = new Web3(web3Provider);
 
 // ----------------- store related function -------------
-/**
- * 修改登录状态，登入
- */
-function login() {
-    store.commit('login');
+
+function storeConnectMetamask() {
+    store.commit('metamaskConnect');
 }
 
-/**
- * 修改登录状态，登出
- */
-function logout() {
-    store.commit('logout');
+function storeDisonnectMetamask() {
+    store.commit('metamaskDisconnect');
 }
 
 /**
@@ -84,25 +79,34 @@ interface noMetamaskInstalledCallback {
  * @param metamaskNotInstalled metamask插件未安装时的回调
  * @returns bool，返回连接是否成功
  */
-export async function connectMetamask(connectedCallBack: (result: any)=>void,
-                               connecteRefused: (error: any)=>void,
-                               connecteFailed: (error: any)=>void,
-                               metamaskNotInstalled: ()=>void) { 
+export async function connectMetamask(connectedCallBack?: connecteSucceedCallback,
+                               connecteRefused?: connecteRefuseCallback,
+                               connecteFailed?: connecteFailedCallback,
+                               metamaskNotInstalled?: noMetamaskInstalledCallback) { 
     if (!isMetaMaskInstalled()) {
-        metamaskNotInstalled();
+        if(metamaskNotInstalled) {
+            metamaskNotInstalled();
+        }
         return false;
     }
     await ethereum
         .request({ method: "eth_requestAccounts" })
         .then((result: any) => {
-            connectedCallBack(result);
+            if(connectedCallBack) {
+                connectedCallBack(result);
+            }
+            storeConnectMetamask()
             return true;
         })
         .catch((error: any) => {
             if (error.code === 4001) {
-                connecteRefused(error);
+                if(connecteRefused) {
+                    connecteRefused(error);
+                }
             } else {
-                connecteFailed(error);
+                if(connecteFailed) {
+                    connecteFailed(error);
+                }
             }
         });
     return false;
@@ -128,12 +132,14 @@ interface getAccountsFailedCallback {
  * @param metamaskNotInstall metamask未安装时的回调
  * @returns 返回数组 Array<string>，数组中是表示地址的字符串
  */
-export async function getMetamaskAccounts(succeed: getAccountsSucceedCallback = ()=>undefined,
-                                          failed: getAccountsFailedCallback = ()=>undefined,
-                                          metamaskNotInstall: metamaskNotConnectedCallback = () => undefined) {
+export async function getMetamaskAccounts(succeed?: getAccountsSucceedCallback,
+                                          failed?: getAccountsFailedCallback,
+                                          metamaskNotInstall?: metamaskNotConnectedCallback) {
     // 检查metamask是否已经安装
     if(!isMetaMaskConnected()) {
-        metamaskNotInstall();
+        if(metamaskNotInstall) {
+            metamaskNotInstall();
+        }
         return [];
     }
     //we use eth_accounts because it returns a list of addresses owned by us.
@@ -142,7 +148,9 @@ export async function getMetamaskAccounts(succeed: getAccountsSucceedCallback = 
             method: "eth_accounts",
         })
         .then((result: any) => {
-            succeed(result);
+            if(succeed) {
+                succeed(result);
+            }
             /*
             if (result.length > 0) {
                 login();
@@ -154,7 +162,9 @@ export async function getMetamaskAccounts(succeed: getAccountsSucceedCallback = 
         })
         .catch((error: any) => {
             console.log(error);
-            failed(error);
+            if(failed) {
+                failed(error);
+            }
         });
         return [];
 }
@@ -165,8 +175,21 @@ export async function getMetamaskAccounts(succeed: getAccountsSucceedCallback = 
  */
 export function isMetaMaskConnected(): boolean {
     if (!isMetaMaskInstalled()) {
+        storeDisonnectMetamask();
         return false;
     }
+    ethereum.request({ method: 'eth_accounts' }).then((result: any) => {
+        if(result.length > 0) {
+            storeConnectMetamask()
+            return true;
+        } else {
+            storeDisonnectMetamask();
+            return false;
+        }
+    }).catch((error: any) => {
+        storeDisonnectMetamask();
+        return false;
+    });
     return Boolean(ethereum.isConnected());
 }
 
@@ -210,8 +233,8 @@ interface sendTransactionFailedCallback {
  * @returns string, transaction的hash，失败返回null
  */
 export async function signAndSendTransaction(tx: any,
-                                             succeed: sendTransactionSucceedCallback = (tx)=>undefined,
-                                             failed: sendTransactionFailedCallback= (error)=>undefined) {
+                                             succeed?: sendTransactionSucceedCallback,
+                                             failed?: sendTransactionFailedCallback) {
     if(!isMetaMaskConnected()) {
         return null;
     }
@@ -222,11 +245,15 @@ export async function signAndSendTransaction(tx: any,
     })
     .then((result: any) => {
         console.log(result);
-        succeed(result);
+        if(succeed) {
+            succeed(result);
+        }
         return result;
     })
     .catch((error: any) => {
-        failed(error);
+        if(failed) {
+            failed(error);
+        }
         console.log(error);
     });
     return null;
@@ -265,7 +292,7 @@ interface switchChainCallback {
  * @param notExistCallBack 目标链不存在回调
  * @returns Bool，切换是否成功
  */
-export async function switchChain(targetChainId: string, notExistCallBack: switchChainCallback = ()=>undefined) {
+export async function switchChain(targetChainId: string, notExistCallBack?: switchChainCallback) {
     if (!isMetaMaskInstalled()) {
         return false;
     }
@@ -278,7 +305,9 @@ export async function switchChain(targetChainId: string, notExistCallBack: switc
     })
     .catch((error: any) => {
         if (error.code === 4902) {
-            notExistCallBack();
+            if(notExistCallBack) {
+                notExistCallBack();
+            }
         }
     });
     return false;
@@ -302,8 +331,8 @@ interface callContractFailedCallback {
  */
 export async function callContractMethod(contract_address: string,
                                          method_data: string,
-                                         succeed: callContractSucceedCallback = (res)=>undefined,
-                                         failed: callContractFailedCallback = (error)=>undefined) {
+                                         succeed?: callContractSucceedCallback,
+                                         failed?: callContractFailedCallback) {
     if (!isMetaMaskInstalled()) {
         return false;
     }
@@ -337,15 +366,12 @@ export async function callContractMethod(contract_address: string,
  */
 function addEventListener() {
     ethereum.on('connect', (connectInfo: any) => {
-        login();
-        console.log(connectInfo);
-        console.log(connectInfo.chainId);
+        storeConnectMetamask();
         changeCurrentChainId(connectInfo.chainId);
     });
 
     ethereum.on('disconnect', (error: any) => {
-        logout();
-        console.log(error);
+        storeDisonnectMetamask();
     });
 }
 
