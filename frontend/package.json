@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@metamask/onboarding": "^1.0.1",
+    "@vueuse/components": "^9.11.0",
+    "@vueuse/core": "^9.11.0",
     "core-js": "^3.8.3",
     "element-plus": "^2.2.27",
     "sass": "^1.57.1",

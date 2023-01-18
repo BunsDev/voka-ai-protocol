@@ -1,9 +1,13 @@
 import { createStore } from 'vuex'
+import { WindowSize } from '@/functions/WindowSizeFunctions/WindowSizeTypes';
+import { computeWindowSizeByWidth } from '@/functions/WindowSizeFunctions/WindowSizeTypes';
 
 export default createStore({
   state: {
     isMetamaskConnected: false,
-    metamaskChainId: "0x0"
+    metamaskChainId: "0x0",
+    windowSizeType: WindowSize.TOOSMALL,
+    windowWidth: 200
   },
   getters: {
   },
@@ -16,7 +20,12 @@ export default createStore({
     },
     chaingeCurrentMetamaskChainId (state: any, data: any) {
         state.metamaskChainId = data.chainId
+    },
+    resizeWindow (state:any, data: any) {
+      state.windowSizeType = data.size;
+      state.windowWidth = data.windowWidth;
     }
+
   },
   actions: {
   },

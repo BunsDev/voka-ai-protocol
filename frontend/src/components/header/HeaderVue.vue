@@ -12,10 +12,33 @@
 
             <el-col :span="14">
                 <div class="right">
-                    <a class="top-menu-item" href="http://www.sunwings.top/index.html">Home</a>
-                    <a class="top-menu-item" href="">NFT</a>
-                    <a class="top-menu-item" href="http://www.sunwings.top/news.html">News</a>
-                    <a class="top-menu-item" href="http://www.sunwings.top/contact.html">Contract</a>
+                    <div class="menu" v-if="_windowWidth >= 700">
+                        <a class="top-menu-item" href="http://www.sunwings.top/index.html">Home</a>
+                        <a class="top-menu-item" href="">NFT</a>
+                        <a class="top-menu-item" href="http://www.sunwings.top/news.html">News</a>
+                        <a class="top-menu-item" href="http://www.sunwings.top/contact.html">Contract</a>
+                    </div>
+                    <div class="menu-dropdown" v-else>
+                        <el-dropdown>
+                            <img src="@/assets/menu-icon.png" style="width: 20px;"/>
+                            <template #dropdown>
+                                <el-dropdown-menu>
+                                    <el-dropdown-item>
+                                        <a class="dropdown-menu-item" href="http://www.sunwings.top/index.html">Home</a>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <a class="dropdown-menu-item" href="">NFT</a>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <a class="dropdown-menu-item" href="http://www.sunwings.top/news.html">News</a>
+                                    </el-dropdown-item>
+                                    <el-dropdown-item>
+                                        <a class="dropdown-menu-item" href="http://www.sunwings.top/contact.html">Contract</a>
+                                    </el-dropdown-item>
+                                </el-dropdown-menu>
+                            </template>
+                        </el-dropdown>
+                    </div>
                 </div>
             </el-col>
         </el-row>
@@ -23,6 +46,14 @@
 </template>
 
 <script setup lang="ts">
+import { computed } from 'vue';
+import { useStore } from 'vuex';
+import { WindowSize } from '@/functions/WindowSizeFunctions/WindowSizeTypes';
+let { state } = useStore();
+
+const _windowWidth = computed(() => {
+    return state.windowWidth;
+})
 </script>
 
 <style scoped lang="scss">
@@ -46,27 +77,44 @@
         display: flex;
         align-items: center;
         justify-content: flex-end;
-        .top-menu-item {
-            font-size: 14px;
-            font-family: Arial, Helvetica, sans-serif;
-            padding: 15px;
-            color: #ffffff;
+        .menu {
+            .top-menu-item {
+                font-size: 14px;
+                font-family: Arial, Helvetica, sans-serif;
+                padding: 15px;
+                color: #ffffff;
+                &:link {
+                    text-decoration: none;
+                }
+                &:visited {
+                    text-decoration: none;
+                }
+                &:hover {
+                    text-decoration: none;
+                }
+                &:active {
+                    text-decoration: none;
+                }
+            }
         }
-        a:link {
-            text-decoration: none;
-        }
-        
-        a:visited {
-            text-decoration: none;
-        }
-        
-        a:hover {
-            text-decoration: none;
-        }
-        
-        a:active {
-            text-decoration: none;
-        }
+    }
+}
+.dropdown-menu-item {
+    font-size: 14px;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 5px;
+    color: #accd9e;
+    &:link {
+        text-decoration: none;
+    }
+    &:visited {
+        text-decoration: none;
+    }
+    &:hover {
+        text-decoration: none;
+    }
+    &:active {
+        text-decoration: none;
     }
 }
 </style>

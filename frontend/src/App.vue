@@ -1,5 +1,6 @@
 <template>
-<el-container>
+  <div ref="root">
+    <el-container>
       <el-header height="80px">
           <header-view></header-view>
       </el-header>
@@ -8,10 +9,33 @@
       </el-main>
       <el-footer></el-footer>
     </el-container>
+  </div>
 </template>
 
 <script setup lang="ts">
+import { ref, onMounted } from "vue";
+import store from "./store";
 import HeaderView from "@/components/header/HeaderVue.vue";
+import { WindowSize, computeWindowSizeByWidth } from '@/functions/WindowSizeFunctions/WindowSizeTypes';
+
+const root = ref<HTMLElement | null>(null);
+
+onMounted(() => {
+  window.addEventListener("resize", WindowResizeHandler);
+  store.commit({
+        type: 'resizeWindow',
+        size: computeWindowSizeByWidth(Number(root.value?.clientWidth)),
+        windowWidth:Number(root.value?.clientWidth)
+    });
+})
+
+function WindowResizeHandler(e: any) {
+  store.commit({
+        type: 'resizeWindow',
+        size: computeWindowSizeByWidth(e?.target?.innerWidth),
+        windowWidth:Number(root.value?.clientWidth)
+    });
+}
 </script>
 
 <style>
