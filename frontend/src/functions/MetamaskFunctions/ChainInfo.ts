@@ -12,6 +12,17 @@ const polygon_testnet_mumbai = [
     },
 ];
 
+const chainIdMap = {
+    "polygon":1,
+    "mumbai":8001,
+
+};
+
+const chainIdMapHex = {
+    "mumbai":"0x13881",
+    
+};
+
 export {
     polygon_testnet_mumbai
 };

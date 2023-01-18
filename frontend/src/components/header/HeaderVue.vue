@@ -1,99 +1,72 @@
 <template>
- <el-row>
-    <el-col :span="8" class="left">
-        <div class="left">
-            <p v-if="isLogin2">connected</p>
-            <p v-else>not connected</p>
-        </div>
-    </el-col>
+    <div class="header">
+        <el-row align="middle" type="flex">
+            <el-col :span="8">
+                <div class="left">
+                    <img src="@/assets/logov2.png" height="36" />
+                </div>
+            </el-col>
 
-    <el-col :span="8">
-        <div class="middle">
-            <p v-if="store.state.isLogin">你拥有的NFT数量：{{ NFTNum }}</p>
-            <p v-else>请登录MetaMask</p>
-        </div>
-    </el-col>
+            <el-col :span="2">
+            </el-col>
 
-    <el-col :span="8">
-        <div class="right">
-            <el-button plain @click="toAbout">About</el-button>
-            <el-tooltip
-                class="box-item"
-                effect="dark"
-                content="点击连接MetaMask"
-                placement="bottom"
-             >
-                <img src="@/assets/metamask-fox.svg" @click="LoginMetaMask" />
-             </el-tooltip>
-        </div>
-    </el-col>
-
-  </el-row>
+            <el-col :span="14">
+                <div class="right">
+                    <a class="top-menu-item" href="http://www.sunwings.top/index.html">Home</a>
+                    <a class="top-menu-item" href="">NFT</a>
+                    <a class="top-menu-item" href="http://www.sunwings.top/news.html">News</a>
+                    <a class="top-menu-item" href="http://www.sunwings.top/contact.html">Contract</a>
+                </div>
+            </el-col>
+        </el-row>
+    </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from 'vue';
-import { useRouter } from "vue-router";
-import { MetaLogin, isMetaMaskConnected, getCurrentNetworkId, getMetamaskSelectedAddress } from '@/functions/MetamaskFunctions/MetaMaskRelatedFuncs';
-import { getNFTNum } from '@/functions/SmartContracts/SunWingsNFT/SunWingsNFTFuncs';
-import store from '@/store';
-import { useStore } from 'vuex';
-const router = useRouter();
-let { state, commit, getters } = useStore();
-
-const isLogin2 = computed(() => {
-    return state.isLogin;
-})
-
-watch(isLogin2, (newVal, oldVal) => {
-    console.log(newVal);
-    console.log(oldVal);
-},{immediate: true, deep: true});
-
-
-
-const NFTNum = ref(0);
-const isLogin = ref(false);
-
-onMounted(() => {
-    console.log(getCurrentNetworkId());
-    getNFTNum2();
-    isMetaLogin();
-    console.log(store.state.isLogin);
-})
-
-
-
-const LoginMetaMask = async () => {
-    const res = await MetaLogin();
-    isLogin.value = isMetaMaskConnected();
-}
-
-
-const isMetaLogin = async () => {
-    const res = await isMetaMaskConnected();
-    isLogin.value = res;
-}
-
-const getNFTNum2 = async () => {
-    const address  = await getMetamaskSelectedAddress();
-    NFTNum.value = await getNFTNum(address);
-}
-
-const toAbout = () => {
-  router.push({
-    name: "about",
-  });
-};
-
 </script>
 
 <style scoped lang="scss">
-.middle {
-  text-align: center;
-}
+.header {
+    height: 100%;
+    padding-right: 25px;
+    padding-left: 25px;
+    margin-right: auto;
+    margin-left: auto;
+    background: #accd9e;
 
-.right {
-  text-align: right;
+    .el-row {
+        height: 100%;
+    }
+
+    .left {
+        display: flex;
+    }
+
+    .right {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        .top-menu-item {
+            font-size: 14px;
+            font-family: Arial, Helvetica, sans-serif;
+            padding: 15px;
+            color: #ffffff;
+        }
+        a:link {
+            text-decoration: none;
+        }
+        
+        a:visited {
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: none;
+        }
+        
+        a:active {
+            text-decoration: none;
+        }
+    }
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
 <el-container>
-      <el-header>
+      <el-header height="80px">
           <header-view></header-view>
       </el-header>
       <el-main>
@@ -23,6 +23,11 @@ import HeaderView from "@/components/header/HeaderVue.vue";
   color: #2c3e50;
   padding: 0px !important;;
   margin: 0px !important;;
+}
+
+.el-header {
+  padding: 0px !important;
+  margin: 0px !important;
 }
 
 html, body {

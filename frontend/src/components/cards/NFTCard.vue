@@ -6,8 +6,8 @@
     />
     <div style="padding: 14px">
       <span>{{ props.nftName }}</span>
-      <p>解禁时间：{{ UnlockDate }}</p>
-      <p>剩余数量：{{ RemainNFTNum }}</p>
+      <p>Unlock Time: {{ UnlockDate }}</p>
+      <p>Remaining NFT Number: {{ RemainNFTNum }}</p>
       <div class="bottom">
         <el-button type="primary" @click="mintNFT" :disabled="isNFTLocked || RemainNFTNum <= 0">mint</el-button>
       </div>
@@ -17,8 +17,8 @@
 
 <script setup lang="ts">
 import { ref, defineProps, onMounted, computed, watch } from 'vue';
-import { isMetaMaskInstalled, getMetamaskSelectedAddress, MetaLogin } from '@/functions/MetamaskFunctions/MetaMaskRelatedFuncs';
-import { mintNFTByGroupId, getNFTNum, getRemainNFTNumByGroupId, isGroupLocked, getUnlockTimeStampByGroupID, timeStamp2Date } from '@/functions/SmartContracts/SunWingsNFT/SunWingsNFTFuncs';
+import { isMetaMaskInstalled, installMetamask, isMetaMaskConnected, connectMetamask, getMetamaskSelectedAddress, MetaLogin } from '@/functions/MetamaskFunctions/MetaMaskRelatedFuncs';
+import { mintNFTByGroupId, getRemainNFTNumByGroupId, isGroupLocked, getUnlockTimeStampByGroupID, timeStamp2Date } from '@/functions/SmartContracts/SunWingsNFT/SunWingsNFTFuncs';
 import { switchChain, addChain } from '@/functions/MetamaskFunctions/MetaMaskRelatedFuncs';
 import { polygon_testnet_mumbai } from '@/functions/MetamaskFunctions/ChainInfo';
 import { ElMessage, ElMessageBox, ElNotification } from "element-plus";
@@ -31,10 +31,12 @@ const currentChainIdInfo = computed(() => {
     return state.metamaskChainId;
 })
 
+/*
 watch(currentChainIdInfo, (newVal, oldVal) => {
     console.log(newVal);
     console.log(oldVal);
 },{immediate: true, deep: true});
+*/
 
 onMounted(() => {
     getUnlockTS();
@@ -49,7 +51,7 @@ const props = defineProps<{
 }>()
 
 const isNFTLocked = ref(true);
-const UnlockDate = ref("");
+const UnlockDate = ref("敬请期待");
 const RemainNFTNum = ref(0);
 
 const switch2Mumbai = async() => {
@@ -61,10 +63,35 @@ const switch2Mumbai = async() => {
 const mintNFT = async () => {
     let continueMint = true;
     if (!isMetaMaskInstalled()) {
-        ElMessage({
-            message: '未安装MetaMask',
+        await ElMessageBox.confirm('一键安装Metamask插件（Chrome or Firefox）','浏览器未安装Metamask插件，无法mint！', {
+            confirmButtonText: '安装',
+            cancelButtonText: '取消',
             type: 'warning',
-        })
+            })
+            .then(() => {
+                installMetamask();
+            })
+            .catch(() => {
+                continueMint = false;
+            });
+    }
+    if(!continueMint) {
+        return;
+    }
+    if(!isMetaMaskConnected()) {
+        await ElMessageBox.confirm('连接Metamask','未连接Metamask，无法mint！', {
+            confirmButtonText: '连接',
+            cancelButtonText: '取消',
+            type: 'warning',
+            })
+            .then(() => {
+                connectMetamask();
+            })
+            .catch(() => {
+                continueMint = false;
+            });
+    }
+    if(!continueMint) {
         return;
     }
     if (currentChainIdInfo.value != "0x13881") {
@@ -87,16 +114,8 @@ const mintNFT = async () => {
         return;
     }
     const address  = getMetamaskSelectedAddress();
-    if(!address) {
-        //ElMessage.info("请链接MetaMask")
-        await ElMessageBox.alert('请连接MetaMask后再Mint', '未连接MetaMask', {
-            // if you want to disable its autofocus
-            // autofocus: false,
-            confirmButtonText: 'OK',
-            callback: (action: Action) => {
-                MetaLogin();
-            },
-        })
+    if(address.length <= 0) {
+        ElMessage.warning("获取address失败")
         return;
     }
     const res = await mintNFTByGroupId(address, props.groupId - 1);
@@ -126,15 +145,11 @@ const isLocked = async() => {
 
 const getUnlockTS = async () => {
     const timestamp: number = await getUnlockTimeStampByGroupID(props.groupId - 1);
+    if(timestamp === 0) {
+        return "敬请期待";
+    }
     const date = timeStamp2Date(timestamp * 1000);
-    let date_str = "";
-    date_str += date.getFullYear().toString() + "年";
-    date_str += date.getMonth().toString() + "月";
-    date_str += date.getDay().toString() + "日";
-    date_str += date.getHours().toString() + "时";
-    date_str += date.getMinutes().toString() + "分";
-    date_str += date.getSeconds().toString() + "秒";
-    UnlockDate.value = date_str;
+    UnlockDate.value = date.toString();
 }
 
 </script>

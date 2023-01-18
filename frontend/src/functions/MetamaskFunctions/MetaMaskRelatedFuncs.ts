@@ -1,7 +1,7 @@
 import MetaMaskOnboarding from "@metamask/onboarding";
-import { ElMessage } from "element-plus";
 import Web3 from 'web3';
 import store from '@/store';
+import { fa } from "element-plus/es/locale";
 
 const onboarding = new MetaMaskOnboarding();
 const { ethereum } = window as any;
@@ -9,193 +9,347 @@ const provider = "https://polygon-mumbai.infura.io/v3/46f3f0763c7f4b8ebbe94c74ff
 const web3Provider = new Web3.providers.HttpProvider(provider);
 const web3 = new Web3(web3Provider);
 
+// ----------------- store related function -------------
+/**
+ * 修改登录状态，登入
+ */
 function login() {
     store.commit('login');
 }
 
+/**
+ * 修改登录状态，登出
+ */
 function logout() {
     store.commit('logout');
 }
 
-function chainCurrentChainId(chainId:string) {
-    console.log(chainId);
+/**
+ * 修改当前MetaMask所在链
+ * @param chainId 新链的chainId
+ */
+function changeCurrentChainId(chainId:string) {
     store.commit({
         type: 'chaingeCurrentMetamaskChainId',
         chainId: chainId
     });
-
 }
 
-//Created check function to see if the MetaMask extension is installed
+/**
+ * 检查浏览器是否安装Metamask插件
+ * @returns bool，返回连接是否成功
+ */
 export function isMetaMaskInstalled() {
     //Have to check the ethereum binding on the window object to see if it's installed
     return Boolean(ethereum && ethereum.isMetaMask);
 }
 
-export async function MetaLogin() {
-    //Now we check to see if MetaMask is installed
-    if (!isMetaMaskInstalled()) {
-        //If it isn't installed we ask the user to click to install it
-        ElMessage.info("请安装MetaMask!");
-        onboarding.startOnboarding();
-    } else {
-        // Will open the MetaMask UI
-        await ethereum
-            .request({ method: "eth_requestAccounts" })
-            .then((result: any) => {
-                console.log(result);
-            })
-            .catch((error:any) => {
-                if (error.code === 4001) {
-                    console.log("用户拒绝请求");
-                } else {
-                    console.log(error);
-                }
-            });
-
-        //we use eth_accounts because it returns a list of addresses owned by us.
-        await ethereum
-            .request({
-                method: "eth_accounts",
-            })
-            .then((result: any) => {
-                console.log(result); // 如果用户拒绝请求，这里回显示[]
-                if(result.length > 0) {
-                    login();
-                } else {
-                    logout();
-                }
-            })
-            .catch((error:any) => {
-                console.log(error);
-            });
-    }
+/**
+ * 安装metamask插件
+ */
+export function installMetamask() {
+    onboarding.startOnboarding();
 }
 
-export function getCurrentNetworkId() {
+/**
+ * 连接成功时的回调
+ */
+interface connecteSucceedCallback {
+    (result: any): void;
+}
+
+/**
+ * 用户拒绝连接时的回调
+ */
+interface connecteRefuseCallback {
+    (error: any): void;
+}
+
+/**其他原因导致连接失败时的回调 */
+interface connecteFailedCallback {
+    (error: any): void;
+}
+
+interface noMetamaskInstalledCallback {
+    (): void;
+}
+
+/**
+ * 连接MetaMask
+ * 通过回调函数来告知调用者结果
+ * 如果只需要知道连接结果，可以不用给回调函数
+ * @param connectedCallBack 连接成功时的回调函数
+ * @param connecteRefused 用户拒绝连接时的回调函数
+ * @param connecteFailed 连接失败时的回调
+ * @param metamaskNotInstalled metamask插件未安装时的回调
+ * @returns bool，返回连接是否成功
+ */
+export async function connectMetamask(connectedCallBack: (result: any)=>void,
+                               connecteRefused: (error: any)=>void,
+                               connecteFailed: (error: any)=>void,
+                               metamaskNotInstalled: ()=>void) { 
     if (!isMetaMaskInstalled()) {
-        return "0";
+        metamaskNotInstalled();
+        return false;
+    }
+    await ethereum
+        .request({ method: "eth_requestAccounts" })
+        .then((result: any) => {
+            connectedCallBack(result);
+            return true;
+        })
+        .catch((error: any) => {
+            if (error.code === 4001) {
+                connecteRefused(error);
+            } else {
+                connecteFailed(error);
+            }
+        });
+    return false;
+}
+
+interface metamaskNotConnectedCallback {
+    (): void;
+}
+
+interface getAccountsSucceedCallback {
+    (accounts: Array<string>): void;
+}
+
+interface getAccountsFailedCallback {
+    (error: any): void;
+}
+
+/**
+ * 获取metamask账户，通过回调函数.
+ * 如果只想获取账户，可以不给回调函数，失败时返回空数组
+ * @param succeed 获取账户成功时的回调，默认为空
+ * @param failed 获取账户失败时的回调
+ * @param metamaskNotInstall metamask未安装时的回调
+ * @returns 返回数组 Array<string>，数组中是表示地址的字符串
+ */
+export async function getMetamaskAccounts(succeed: getAccountsSucceedCallback = ()=>undefined,
+                                          failed: getAccountsFailedCallback = ()=>undefined,
+                                          metamaskNotInstall: metamaskNotConnectedCallback = () => undefined) {
+    // 检查metamask是否已经安装
+    if(!isMetaMaskConnected()) {
+        metamaskNotInstall();
+        return [];
+    }
+    //we use eth_accounts because it returns a list of addresses owned by us.
+    await ethereum
+        .request({
+            method: "eth_accounts",
+        })
+        .then((result: any) => {
+            succeed(result);
+            /*
+            if (result.length > 0) {
+                login();
+            } else {
+                logout();
+            }
+            */
+           return result;
+        })
+        .catch((error: any) => {
+            console.log(error);
+            failed(error);
+        });
+        return [];
+}
+
+/**
+ * 判断metamask是否连接
+ * @returns Bool
+ */
+export function isMetaMaskConnected(): boolean {
+    if (!isMetaMaskInstalled()) {
+        return false;
+    }
+    return Boolean(ethereum.isConnected());
+}
+
+/**
+ * 获取当前metamask连接的链的chainId
+ * @returns string，chainId，获取失败时返回空字符串
+ */
+export function getCurrentNetworkId(): string {
+    if (!isMetaMaskInstalled()) {
+        return "";
     }
     return ethereum.networkVersion;
 }
 
-export async function isMetaMaskConnected() {
-    if (!isMetaMaskInstalled()) {
-        return false;
-    }
-    const res = await ethereum.isConnected()
-}
-
-export function getMetamaskSelectedAddress() {
-    if (!isMetaMaskInstalled()) {
-        return null;
-    }
-    if(!ethereum.isConnected()) {
-        // 未登陆
-        return null;
+/**
+ * 获取metamask当前选中的address
+ * @returns string，表示address，失败时返回空字符串
+ */
+export function getMetamaskSelectedAddress(): string {
+    if (!isMetaMaskConnected()) {
+        return "";
     }
     return ethereum.selectedAddress;
 }
 
-export async function signAndSendTransaction(tx: any) {
-    if (!isMetaMaskInstalled()) {
-        return;
-    }
-    if(!ethereum.isConnected()) {
-        ElMessage.warning("connect please!");
-    }
-    let res;
-    try {
-        res = await ethereum.request({
-            method: 'eth_sendTransaction',
-            params: [tx],
-        });
-    } catch(error: any) {
-        throw new Error("sign&send Transaction error");
-    }
-    return res;
+
+interface sendTransactionSucceedCallback {
+    (tx: any): void;
 }
 
-export async function addChain(networkDataArray: any) {
+interface sendTransactionFailedCallback {
+    (error: any): void;
+}
+
+/**
+ * 
+ * 利用metamask对transaction签名，并发送
+ * @param tx 需要签名&发送的transaction
+ * @param succeed 成功时回调函数
+ * @param failed 失败时回调函数
+ * @returns string, transaction的hash，失败返回null
+ */
+export async function signAndSendTransaction(tx: any,
+                                             succeed: sendTransactionSucceedCallback = (tx)=>undefined,
+                                             failed: sendTransactionFailedCallback= (error)=>undefined) {
+    if(!isMetaMaskConnected()) {
+        return null;
+    }
+    await ethereum
+    .request({
+        method: 'eth_sendTransaction',
+        params: [tx],
+    })
+    .then((result: any) => {
+        console.log(result);
+        succeed(result);
+        return result;
+    })
+    .catch((error: any) => {
+        failed(error);
+        console.log(error);
+    });
+    return null;
+}
+
+/**
+ * 向Metamask增加新链
+ * @param networkDataArray 数组，每一项是新链的描述信息，具体信息参考ChainInfo.ts
+ * @returns Bool，表示增加是否成功
+ */
+export async function addChain(networkDataArray: Array<any>) {
     if (!isMetaMaskInstalled()) {
         return false;
     }
     await ethereum
-      .request({
-        method: "wallet_addEthereumChain",
-        params: networkDataArray,
-      })
-      .then((result:any) => {
-          return true;
-      })
-      .catch((error: any) => {
-        console.log(error); 
-        return false;
-      })
+        .request({
+            method: "wallet_addEthereumChain",
+            params: networkDataArray,
+        })
+        .then((result: any) => {
+            return true;
+        })
+        .catch((error: any) => {
+            console.log(error);
+            return false;
+        })
 }
 
 interface switchChainCallback {
-  (): void;
+    (): void;
 }
 
-// targetChainId必须是十六进制，比如0x13881
-export async function switchChain(targetChainId: string, notExistCallBack: switchChainCallback) {
-    if (!isMetaMaskInstalled()) {
-        return;
-    }
-    try {
-      await ethereum.request({
-        method: 'wallet_switchEthereumChain',
-        params: [{ chainId: targetChainId }],
-      });
-    } catch (switchError: any) {
-      // This error code indicates that the chain has not been added to MetaMask.
-      if (switchError.code === 4902) {
-        notExistCallBack();
-        return;
-      }
-      // handle other "switch" errors
-      console.log(switchError); 
-    }
-}
-
-export async function callContractMethod(contract_address: string, method_data: string) {
+/**
+ * 切换metamask所在链
+ * @param targetChainId string，必须是十六进制的id，比如0x13881
+ * @param notExistCallBack 目标链不存在回调
+ * @returns Bool，切换是否成功
+ */
+export async function switchChain(targetChainId: string, notExistCallBack: switchChainCallback = ()=>undefined) {
     if (!isMetaMaskInstalled()) {
         return false;
     }
-    if(!ethereum.isConnected()) {
-        ElMessage.warning("connect please!");
+    await ethereum.request({
+        method: 'wallet_switchEthereumChain',
+        params: [{ chainId: targetChainId }],
+    })
+    .then((result: any) => {
+        return true;
+    })
+    .catch((error: any) => {
+        if (error.code === 4902) {
+            notExistCallBack();
+        }
+    });
+    return false;
+}
+
+interface callContractSucceedCallback {
+    (result: any): void;
+}
+
+interface callContractFailedCallback {
+    (error: any): void;
+}
+
+/**
+ * 调用智能合约函数
+ * @param contract_address 调用智能合约的地址
+ * @param method_data 调用智能合约方法的数据
+ * @param succeed 成功回调
+ * @param failed 失败回调
+ * @returns Bool, 是否调用成功
+ */
+export async function callContractMethod(contract_address: string,
+                                         method_data: string,
+                                         succeed: callContractSucceedCallback = (res)=>undefined,
+                                         failed: callContractFailedCallback = (error)=>undefined) {
+    if (!isMetaMaskInstalled()) {
+        return false;
     }
-    const nonce = await web3.eth.getTransactionCount(ethereum.selectedAddress, 'latest'); //get latest nonce
+    let nonce;
+    try {
+        nonce = await web3.eth.getTransactionCount(ethereum.selectedAddress, 'latest'); //get latest nonce
+    } catch {
+        return false;
+    }
 
     //the transaction
     const tx = {
-	'from': ethereum.selectedAddress,
-	'to': contract_address,
-	'nonce': nonce.toString(),
-	'gas': '500000',
-	'data': method_data
+        'from': ethereum.selectedAddress,
+        'to': contract_address,
+        'nonce': nonce.toString(),
+        'gas': '500000',
+        'data': method_data
     };
+    let res;
     try {
-        const res = await signAndSendTransaction(tx);
+        res = await signAndSendTransaction(tx, succeed, failed);
     } catch (e: any) {
         return false;
     }
-    return true;
+    return res ? true : false;
 }
 
-
-
-if (isMetaMaskInstalled()) {
+/**
+ * 为metamask增加时间监听
+ * 需要安装metamask插件才能调用
+ */
+function addEventListener() {
     ethereum.on('connect', (connectInfo: any) => {
-            login();
-            console.log(connectInfo);
-            console.log(connectInfo.chainId);
-            chainCurrentChainId(connectInfo.chainId);
+        login();
+        console.log(connectInfo);
+        console.log(connectInfo.chainId);
+        changeCurrentChainId(connectInfo.chainId);
     });
-    
+
     ethereum.on('disconnect', (error: any) => {
-            logout();
-            console.log(error);
+        logout();
+        console.log(error);
     });
+}
+
+// 没有安装metamask时，不能添加时间监听，否则会出错
+if (isMetaMaskInstalled()) {
+    addEventListener();
 }
