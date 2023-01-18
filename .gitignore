@@ -4,3 +4,4 @@ backend/__pycache__
 backend/*/__pycache__
 truffle_project/package-lock.json
 truffle_project/node_modules
+truffle_project/build/*

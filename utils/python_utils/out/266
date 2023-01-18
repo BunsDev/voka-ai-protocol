@@ -1,0 +1,19 @@
+{
+    "name": "idol 7",
+    "description": "nft of idol 7",
+    "image": "ipfs://QmWQCwp93rqgbP7E3VwkLeD4tq6SDTTeCwEnvf4LExCZx5",
+    "attributes": [
+        {
+            "trait_type": "Clothes",
+            "value": "Light Green"
+        },
+        {
+            "trait_type": "Hat",
+            "value": "Dark Red"
+        },
+        {
+            "trait_type": "Background",
+            "value": "New Punk Red"
+        }
+    ]
+}

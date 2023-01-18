@@ -1,0 +1,19 @@
+{
+    "name": "idol 5",
+    "description": "nft of idol 5",
+    "image": "ipfs://QmbYcoK7BQoP5pAPiMvFX1ZoZWtT6KmKgR4jqdJTyeDLLH",
+    "attributes": [
+        {
+            "trait_type": "Clothes",
+            "value": "Black"
+        },
+        {
+            "trait_type": "Hat",
+            "value": "Black"
+        },
+        {
+            "trait_type": "Background",
+            "value": "white"
+        }
+    ]
+}

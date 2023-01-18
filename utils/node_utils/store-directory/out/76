@@ -1,0 +1,19 @@
+{
+    "name": "idol 2",
+    "description": "nft of idol 2",
+    "image": "ipfs://QmbMZvJiFG71izoaAN8sDmKBQXsLGvM7bkvW9GuidmsRS7",
+    "attributes": [
+        {
+            "trait_type": "Clothes",
+            "value": "Red"
+        },
+        {
+            "trait_type": "Hat",
+            "value": "Yellow"
+        },
+        {
+            "trait_type": "Background",
+            "value": "New Blue"
+        }
+    ]
+}

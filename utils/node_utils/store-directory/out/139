@@ -1,0 +1,19 @@
+{
+    "name": "idol 4",
+    "description": "nft of idol 4",
+    "image": "ipfs://Qmah24NjsWfhK3doKVJEwwrzLWQ5fGbjkfFdqd7k7euf7r",
+    "attributes": [
+        {
+            "trait_type": "Clothes",
+            "value": "Pink Green"
+        },
+        {
+            "trait_type": "Hat",
+            "value": "light pink"
+        },
+        {
+            "trait_type": "Background",
+            "value": "pink"
+        }
+    ]
+}

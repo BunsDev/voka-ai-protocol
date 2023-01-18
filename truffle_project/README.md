@@ -1,5 +1,18 @@
 # VOKA AI PROTOCOL
 
+## 部署方式
+1. 安装依赖
+	`npm install`
+2. 设置环境变量
+	* BLOCKCHAIN_PHRASE：12个word的钱包助记词
+	* infura对应各个链的链接，比如polygon测试链mumbai，设置MUMBAI_LINK
+3. 编译
+	`truffle compile`
+4. 部署
+	可以部署到指定网络，比如部署到polygon的测试链：`truffle deploy --network matic`
+
+需要注意的是，助记词对应的账户在要部署的链上需要有钱，用于支付gas
+
 ## Introduction:
 ***VOKA AI Protocol*** is the embodiment of a new generation of Web 3.0 technologies. 
 Not only are we capable of **generating exclusive anime avatars through our proprietary AI technology**; 

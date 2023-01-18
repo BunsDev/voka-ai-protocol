@@ -1,0 +1,19 @@
+{
+    "name": "idol 6",
+    "description": "nft of idol 6",
+    "image": "ipfs://QmZyK8z4Tpm4KV65RLChTxGEFkfEuSqGf32B2JeskQUmZG",
+    "attributes": [
+        {
+            "trait_type": "Clothes",
+            "value": "Dark Gray"
+        },
+        {
+            "trait_type": "Hat",
+            "value": "Black"
+        },
+        {
+            "trait_type": "Background",
+            "value": "Dark Blue"
+        }
+    ]
+}
