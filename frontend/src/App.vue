@@ -58,6 +58,7 @@ function WindowResizeHandler(e: any) {
 }
 
 html, body {
+  background-color: #edf0e5;
   margin: 0px !important;
   padding: 0px !important;
 }

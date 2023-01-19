@@ -1,5 +1,5 @@
 <template>
-  <div class="hello" v-mode="1">
+  <div class="sunwings_nft_footer" v-mode="1">
       <el-collapse model-value="1">
       <el-collapse-item title="How to mint/buy NFT?" name="1">
         <div>
@@ -26,4 +26,11 @@ const activeNames = ref(['1'])
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+/deep/ .el-collapse-item__wrap {
+  background-color: #edf0e5;
+}
+
+/deep/ .el-collapse-item__header {
+  background-color: #edf0e5;
+}
 </style>
