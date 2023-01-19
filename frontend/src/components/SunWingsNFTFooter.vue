@@ -2,8 +2,11 @@
   <div class="sunwings_nft_footer" v-mode="1">
       <el-collapse model-value="1">
       <el-collapse-item title="How to mint/buy NFT?" name="1">
-        <div>
+        <div style="font-size: 14px; font-weight: bold;">
           Please check the <el-button link type="success" @click="jump2tutorial">Tutorial</el-button>
+        </div>
+        <div style="font-style: italic; font-size: 10px;">
+          This information comes from Google, does not represent the views of this project.
         </div>
       </el-collapse-item>
     </el-collapse>
