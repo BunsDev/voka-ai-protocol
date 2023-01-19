@@ -17,10 +17,7 @@ import { ElMessageBox } from 'element-plus'
 const tutorial_url = "http://ptworker.com/en/2023/01/14/%e5%a6%82%e4%bd%95%e8%b4%ad%e4%b9%b0nft-%ef%bc%88%e4%b8%80%ef%bc%89%ef%bc%9a%e8%b6%85%e7%ba%a7%e6%96%b0%e6%89%8b%e5%85%a5%e9%97%a8/";
 
 const jump2tutorial = () => {
-    ElMessageBox.confirm('This tutorial is provided unofficially, please pay attention to the distinction.')
-    .then(() => {
-        window.location.href = tutorial_url;
-    })
+    window.location.href = tutorial_url;
 }
 
 const activeNames = ref(['1'])
