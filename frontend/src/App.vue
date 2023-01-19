@@ -7,7 +7,9 @@
       <el-main>
         <router-view class="main"></router-view>
       </el-main>
-      <el-footer></el-footer>
+      <el-footer>
+        <sun-wings-n-f-t-footer></sun-wings-n-f-t-footer>
+      </el-footer>
     </el-container>
   </div>
 </template>
@@ -16,6 +18,7 @@
 import { ref, onMounted } from "vue";
 import store from "./store";
 import HeaderView from "@/components/header/HeaderVue.vue";
+import SunWingsNFTFooter from "./components/SunWingsNFTFooter.vue"
 import { WindowSize, computeWindowSizeByWidth } from '@/functions/WindowSizeFunctions/WindowSizeTypes';
 
 const root = ref<HTMLElement | null>(null);
