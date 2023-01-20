@@ -6,7 +6,8 @@ import { callContractMethod } from '@/functions/MetamaskFunctions/MetaMaskRelate
 let onboarding;
 let contract_abi;
 const { ethereum } = window as any;
-const SunWingsNFT_contract_address = "0x8897E7c5E044d7897628150389343B70f84cA6c9____";
+//const SunWingsNFT_contract_address = "0x8897E7c5E044d7897628150389343B70f84cA6c9";
+const SunWingsNFT_contract_address = "0x80F9085Ccf8af5c88A02722C6A9A8a2604aF056a_";
 const contract_address = SunWingsNFT_contract_address;
 const provider = "https://polygon-mumbai.infura.io/v3/46f3f0763c7f4b8ebbe94c74ffb969cf";
 
@@ -26,7 +27,7 @@ function init(): boolean {
     }
     return true;
 }
-
+init();
 
 /**
  * 通过指定group id，mint指定组的NFT
@@ -35,7 +36,7 @@ function init(): boolean {
  * @returns 返回mint是否成功
  */
 export async function mintNFTByGroupId(address: string, groupId: number): Promise<boolean> {
-    const res = await callContractMethod(contract_address, contract.methods.mint(address, groupId).encodeABI());
+    const res = await callContractMethod(contract_address, contract.methods.mint(address, groupId).encodeABI(),7250000000000000000);
     return res;
 }
 
@@ -73,7 +74,7 @@ export async function getUnlockTimeStampByGroupID(groupId: number): Promise<numb
 export async function isGroupLocked(groupId: number): Promise<boolean> {
     let locked = true;
     await contract.methods.isGroupLocked(groupId).call().then(function(res: any) {
-        locked = res ? res : true;
+        locked = res;
     });
     return locked;
 }
